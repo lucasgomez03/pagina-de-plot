@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido recibido | PLOT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="checkout-page">
+  <main class="payment-result">
+    <div class="payment-result-card">
+      <div class="result-icon">✓</div>
+      <span class="checkout-step">PLOT · PEDIDO</span>
+      <h1>¡Recibimos tu pedido!</h1>
+      <p>Tu solicitud fue enviada correctamente. Nos vamos a comunicar con vos para coordinar el pago y la entrega.</p>
+      <p class="order-number">Número de pedido: <strong id="order-number">PLOT</strong></p>
+      <a class="checkout-btn result-btn" href="catalogo.html">Volver al catálogo</a>
+    </div>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const order = params.get('pedido');
+    if (order) document.getElementById('order-number').textContent = order;
+  </script>
+</body>
+</html>
