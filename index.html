@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLOT | Librería Online</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Swiper CSS para los carruseles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVBAR -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">PLOT</a>
+
+            <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#correo-literario">Correo Literario</a></li>
+                    <li><a href="#destacados">Destacados</a></li>
+                    <li><a href="#stock-inmediato">Stock Inmediato</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                </ul>
+            </nav>
+
+            <button class="cart-toggle" aria-label="Abrir carrito de compras">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SECCIÓN 1: CORREO LITERARIO -->
+    <section id="correo-literario" class="correo-literario-section">
+        <div class="container correo-grid">
+            <div class="correo-info">
+                <span class="badge-tag">Experiencia Exclusiva</span>
+                <h2>El Correo Literario de PLOT</h2>
+                <p>
+                    Recibí cada mes una caja literaria diseñada para sorprenderte. Libros cuidadosamente seleccionados según tus gustos, acompañados de señaladores, golosinas y detalles que convierten cada lectura en un momento único.
+                </p>
+                <ul class="correo-features">
+                    <li><i class="fa-solid fa-check"></i> Selección personalizada a tu perfil lector.</li>
+                    <li><i class="fa-solid fa-check"></i> Packaging temático y regalos sorpresa en cada entrega.</li>
+                    <li><i class="fa-solid fa-check"></i> Envíos a todo el país coordinados con atención personalizada.</li>
+                </ul>
+                <div class="correo-actions">
+                    <a href="#contacto" class="btn btn-whatsapp-scroll" onclick="seleccionarMotivoCorreo()">
+                        <i class="fa-brands fa-whatsapp"></i> Coordinar Correo por WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Carrusel ilustrativo de la experiencia -->
+            <div class="correo-carousel-wrapper">
+                <div class="swiper swiper-correo">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide correo-slide">
+                            <img src="imagenes/100%20citas%20juntos.jpg" alt="Unboxing del Correo Literario">
+                            <div class="slide-caption">
+                                <h4>1. Unboxing Especial</h4>
+                                <p>Caja sellada con sellos artesanales y regalos de cortesía.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide correo-slide">
+                            <img src="imagenes/Alas%20de%20sangre.jpg" alt="Libro del Mes Seleccionado">
+                            <div class="slide-caption">
+                                <h4>2. El Libro del Mes</h4>
+                                <p>Títulos premiados y novedades acordes a tus preferencias.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide correo-slide">
+                            <img src="imagenes/El%20diario%20de%20la%20soledad%20TAPA%20DURA.jpg" alt="Ediciones Cuidadas y Accesorios">
+                            <div class="slide-caption">
+                                <h4>3. Extras & Merch Exclusivo</h4>
+                                <p>Stickers, señaladores coleccionables y cartas del autor.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination swiper-correo-pagination"></div>
+                    <div class="swiper-button-prev swiper-correo-prev"></div>
+                    <div class="swiper-button-next swiper-correo-next"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: LIBROS DESTACADOS (10 libros) -->
+    <section id="destacados" class="section-carousel-container">
+        <div class="container">
+            <div class="section-header-flex">
+                <h2 class="section-title">Libros Destacados</h2>
+                <div class="carousel-nav-arrows">
+                    <button class="nav-arrow dest-prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="nav-arrow dest-next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="swiper swiper-destacados">
+                <div class="swiper-wrapper">
+                    <!-- 1 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Etereo.jpg" alt="Etereo">
+                            <h3>Etereo</h3>
+                            <p>Joana Marcus</p>
+                            <span>Ficción</span>
+                            <h4>$29.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 2 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Sempiterno.jpg" alt="Sempiterno">
+                            <h3>Sempiterno</h3>
+                            <p>Joana Marcus</p>
+                            <span>Ficción</span>
+                            <h4>$29.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 3 -->
+                    <div class="swiper-slide">
+                        <article class="book-card fantasia" data-categoria="fantasia">
+                            <img src="imagenes/Alas%20de%20sangre.jpg" alt="Alas de sangre">
+                            <h3>Alas de sangre</h3>
+                            <p>Rebecca Yarros</p>
+                            <span>Fantasía</span>
+                            <h4>$41.220</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 4 -->
+                    <div class="swiper-slide">
+                        <article class="book-card fantasia" data-categoria="fantasia">
+                            <img src="imagenes/Alas%20de%20hierro.jpg" alt="Alas de hierro">
+                            <h3>Alas de hierro</h3>
+                            <p>Rebecca Yarros</p>
+                            <span>Fantasía</span>
+                            <h4>$44.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 5 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/Habitos%20atomicos%20en%20accion.jpg" alt="Hábitos Atómicos">
+                            <h3>Hábitos Atómicos</h3>
+                            <p>James Clear</p>
+                            <span>Desarrollo</span>
+                            <h4>$27.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 6 -->
+                    <div class="swiper-slide">
+                        <article class="book-card thriller" data-categoria="thriller">
+                            <img src="imagenes/La%20asistenta.jpg" alt="La asistenta">
+                            <h3>La asistenta</h3>
+                            <p>Freida McFadden</p>
+                            <span>Thriller</span>
+                            <h4>$32.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 7 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/Antes%20de%20Diciembre.jpg" alt="Antes de Diciembre">
+                            <h3>Antes de Diciembre</h3>
+                            <p>Joana Marcus</p>
+                            <span>Romance</span>
+                            <h4>$31.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 8 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/Culpa%20mia.jpg" alt="Culpa mía">
+                            <h3>Culpa mía</h3>
+                            <p>Mercedes Ron</p>
+                            <span>Romance</span>
+                            <h4>$28.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 9 -->
+                    <div class="swiper-slide">
+                        <article class="book-card clasicos" data-categoria="clasicos">
+                            <img src="imagenes/100%20a%C3%B1os%20de%20soledad.jpg" alt="Cien años de soledad">
+                            <h3>Cien años de soledad</h3>
+                            <p>Gabriel García Márquez</p>
+                            <span>Clásicos</span>
+                            <h4>$33.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 10 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/Como%20hacer%20que%20te%20pasen%20cosas%20buenas.jpg" alt="Cómo hacer que te pasen cosas buenas">
+                            <h3>Cosas buenas</h3>
+                            <p>Marian Rojas Estapé</p>
+                            <span>Desarrollo</span>
+                            <h4>$34.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                </div>
+                <div class="swiper-pagination swiper-destacados-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: STOCK INMEDIATO (20 libros) -->
+    <section id="stock-inmediato" class="section-carousel-container alt-bg">
+        <div class="container">
+            <div class="section-header-flex">
+                <div>
+                    <span class="badge-tag">Entrega Inmediata</span>
+                    <h2 class="section-title text-start">Stock Inmediato</h2>
+                </div>
+                <div class="carousel-nav-arrows">
+                    <button class="nav-arrow stock-prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="nav-arrow stock-next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="swiper swiper-stock">
+                <div class="swiper-wrapper">
+                    <!-- 1 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/Amor%20Fati.jpg" alt="Amor Fati">
+                            <h3>Amor Fati</h3>
+                            <p>Filosofía Estoica</p>
+                            <span>Desarrollo</span>
+                            <h4>$24.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 2 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/50%20proverbios%20estoicos%20para%20una%20buena%20vida%20TAPA%20DURA.jpg" alt="50 Proverbios Estoicos">
+                            <h3>50 Proverbios Estoicos</h3>
+                            <p>Edición Especial</p>
+                            <span>Desarrollo</span>
+                            <h4>$26.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 3 -->
+                    <div class="swiper-slide">
+                        <article class="book-card thriller" data-categoria="thriller">
+                            <img src="imagenes/Cadaver%20Exquisito.jpg" alt="Cadáver Exquisito">
+                            <h3>Cadáver Exquisito</h3>
+                            <p>Agustina Bazterrica</p>
+                            <span>Thriller</span>
+                            <h4>$26.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 4 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Almendra.jpg" alt="Almendra">
+                            <h3>Almendra</h3>
+                            <p>Won-Pyung Sohn</p>
+                            <span>Ficción</span>
+                            <h4>$25.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 5 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/A%20dos%20metros%20de%20ti%20.jpg" alt="A dos metros de ti">
+                            <h3>A dos metros de ti</h3>
+                            <p>Rachael Lippincott</p>
+                            <span>Romance</span>
+                            <h4>$27.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 6 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Carrie.jpg" alt="Carrie">
+                            <h3>Carrie</h3>
+                            <p>Stephen King</p>
+                            <span>Thriller</span>
+                            <h4>$29.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 7 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/Centrate.jpg" alt="Céntrate">
+                            <h3>Céntrate</h3>
+                            <p>Cal Newport</p>
+                            <span>Desarrollo</span>
+                            <h4>$30.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 8 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/Burlar%20al%20diablo.jpg" alt="Burlar al diablo">
+                            <h3>Burlar al diablo</h3>
+                            <p>Napoleon Hill</p>
+                            <span>Desarrollo</span>
+                            <h4>$28.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 9 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Blue%20Lock%201.jpg" alt="Blue Lock 1">
+                            <h3>Blue Lock 1</h3>
+                            <p>Muneyuki Kaneshiro</p>
+                            <span>Manga</span>
+                            <h4>$16.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 10 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Blue%20Lock%202.jpg" alt="Blue Lock 2">
+                            <h3>Blue Lock 2</h3>
+                            <p>Muneyuki Kaneshiro</p>
+                            <span>Manga</span>
+                            <h4>$16.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 11 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/Blue%20Lock%203.jpg" alt="Blue Lock 3">
+                            <h3>Blue Lock 3</h3>
+                            <p>Muneyuki Kaneshiro</p>
+                            <span>Manga</span>
+                            <h4>$16.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 12 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/Binding%2013%20-tommen%201-.jpg" alt="Binding 13">
+                            <h3>Binding 13</h3>
+                            <p>Chloe Walsh</p>
+                            <span>Romance</span>
+                            <h4>$35.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 13 -->
+                    <div class="swiper-slide">
+                        <article class="book-card clasicos" data-categoria="clasicos">
+                            <img src="imagenes/El%20principito.jpg" alt="El principito">
+                            <h3>El principito</h3>
+                            <p>Antoine de Saint-Exupéry</p>
+                            <span>Clásicos</span>
+                            <h4>$14.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 14 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/El%20hombre%20en%20busca%20de%20sentido.jpg" alt="El hombre en busca de sentido">
+                            <h3>En busca de sentido</h3>
+                            <p>Viktor Frankl</p>
+                            <span>Psicología</span>
+                            <h4>$24.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 15 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/El%20monje%20que%20vendio%20su%20ferrari.jpg" alt="El monje que vendió su ferrari">
+                            <h3>El monje que vendió su ferrari</h3>
+                            <p>Robin Sharma</p>
+                            <span>Desarrollo</span>
+                            <h4>$27.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 16 -->
+                    <div class="swiper-slide">
+                        <article class="book-card ficcion" data-categoria="ficcion">
+                            <img src="imagenes/El%20gato%20que%20cuidaba%20las%20bibliotecas.jpg" alt="El gato que cuidaba las bibliotecas">
+                            <h3>El gato de las bibliotecas</h3>
+                            <p>Sosuke Natsukawa</p>
+                            <span>Ficción</span>
+                            <h4>$25.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 17 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/Culpa%20Tuya.jpg" alt="Culpa tuya">
+                            <h3>Culpa tuya</h3>
+                            <p>Mercedes Ron</p>
+                            <span>Romance</span>
+                            <h4>$28.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 18 -->
+                    <div class="swiper-slide">
+                        <article class="book-card romance" data-categoria="romance">
+                            <img src="imagenes/Culpa%20Nuestra.jpg" alt="Culpa nuestra">
+                            <h3>Culpa nuestra</h3>
+                            <p>Mercedes Ron</p>
+                            <span>Romance</span>
+                            <h4>$28.500</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 19 -->
+                    <div class="swiper-slide">
+                        <article class="book-card desarrollo" data-categoria="desarrollo">
+                            <img src="imagenes/50%20capsulas%20de%20amor%20propio.jpg" alt="50 cápsulas de amor propio">
+                            <h3>50 Cápsulas de amor propio</h3>
+                            <p>Bernardo Stamateas</p>
+                            <span>Desarrollo</span>
+                            <h4>$23.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                    <!-- 20 -->
+                    <div class="swiper-slide">
+                        <article class="book-card clasicos" data-categoria="clasicos">
+                            <img src="imagenes/El%20Extranjero.jpg" alt="El Extranjero">
+                            <h3>El Extranjero</h3>
+                            <p>Albert Camus</p>
+                            <span>Clásicos</span>
+                            <h4>$22.000</h4>
+                            <button type="button">Comprar</button>
+                        </article>
+                    </div>
+                </div>
+                <div class="swiper-pagination swiper-stock-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: FORMULARIO DE CONTACTO -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contacto & Correo Literario</h2>
+            <p style="text-align: center; max-width: 650px; margin: -30px auto 40px auto; color: #666;">
+                Dejanos tus datos para coordinar tu suscripción del Correo Literario o realizar cualquier consulta sobre nuestros libros.
+            </p>
+
+            <form class="contact-form" novalidate>
+                <div class="form-row-2">
+                    <input type="text" name="nombre" placeholder="Nombre *" required>
+                    <input type="text" name="apellido" placeholder="Apellido *" required>
+                </div>
+
+                <div class="form-row-2">
+                    <input type="email" name="email" placeholder="Email *" required>
+                    <input type="tel" name="telefono" placeholder="WhatsApp / Teléfono *" required>
+                </div>
+
+                <select name="motivo" id="select-motivo" class="form-select">
+                    <option value="correo">📦 Coordinar Correo Literario por WhatsApp</option>
+                    <option value="consulta">📚 Consulta por catálogo o libro específico</option>
+                    <option value="stock">⚡ Consulta por Stock Inmediato</option>
+                    <option value="otro">💬 Otro motivo</option>
+                </select>
+
+                <input type="text" name="libro" placeholder="Libro, saga o géneros de preferencia (opcional)">
+
+                <textarea rows="5" name="mensaje" placeholder="Escribí tu mensaje o consulta..." required></textarea>
+
+                <p class="form-message" role="status" aria-live="polite"></p>
+
+                <button type="submit">
+                    Enviar consulta
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER ORIGINAL -->
+    <footer>
+        <div class="container">
+            <h2>PLOT</h2>
+            <p>© 2026 PLOT - Todos los derechos reservados</p>
+
+            <!-- Redes sociales -->
+            <div class="social-links">
+                <a href="https://www.instagram.com/plot.libros/" target="_blank" rel="noopener noreferrer" class="social-icon instagram" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/tu_pagina" target="_blank" rel="noopener noreferrer" class="social-icon facebook" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.tiktok.com/@plot.libros?lang=en" target="_blank" rel="noopener noreferrer" class="social-icon tiktok" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://listado.mercadolibre.com.ar/pagina/mz20260127202138/#component=menu_corridors&tracking_id=77a5ac54-7f8c-451b-b16d-e55846850fa1&label=Todos+los+productos&global_position=1" target="_blank" rel="noopener noreferrer" class="social-icon mercadolibre" aria-label="Mercado Libre">
+                    <img src="images/ML.webp" alt="Mercado Libre" style="width: 24px; height: 24px;">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CARRITO ASIDE ORIGINAL -->
+    <div class="cart-overlay"></div>
+    <aside class="cart-panel">
+        <div class="cart-panel-header">
+            <h3>Tu carrito</h3>
+            <button class="close-cart" aria-label="Cerrar carrito">&times;</button>
+        </div>
+
+        <ul class="cart-items"></ul>
+
+        <div class="cart-panel-footer">
+            <div class="cart-subtotal-row"><span>Subtotal</span><strong class="cart-total">$0</strong></div>
+            <p class="cart-shipping-note">Envío: a coordinar en el checkout</p>
+            <button class="checkout-btn">Ir al checkout</button>
+        </div>
+    </aside>
+
+    <!-- Swiper JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- EmailJS & Carrito -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/carrito.js"></script>
+
+    <script>
+        // Función para autoseleccionar motivo al clickear botón del Correo
+        function seleccionarMotivoCorreo() {
+            const select = document.getElementById('select-motivo');
+            if (select) select.value = 'correo';
+        }
+
+        // Inicializar Carruseles Swiper
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Carrusel Correo Literario
+            new Swiper('.swiper-correo', {
+                loop: true,
+                autoplay: {
+                    delay: 3500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-correo-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-correo-next',
+                    prevEl: '.swiper-correo-prev',
+                },
+                effect: 'fade',
+                fadeEffect: { crossFade: true }
+            });
+
+            // 2. Carrusel Libros Destacados
+            new Swiper('.swiper-destacados', {
+                slidesPerView: 1.2,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: '.dest-next',
+                    prevEl: '.dest-prev',
+                },
+                pagination: {
+                    el: '.swiper-destacados-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    480: { slidesPerView: 2, spaceBetween: 20 },
+                    768: { slidesPerView: 3, spaceBetween: 25 },
+                    1024: { slidesPerView: 4, spaceBetween: 25 },
+                    1200: { slidesPerView: 5, spaceBetween: 25 }
+                }
+            });
+
+            // 3. Carrusel Stock Inmediato
+            new Swiper('.swiper-stock', {
+                slidesPerView: 1.2,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: '.stock-next',
+                    prevEl: '.stock-prev',
+                },
+                pagination: {
+                    el: '.swiper-stock-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    480: { slidesPerView: 2, spaceBetween: 20 },
+                    768: { slidesPerView: 3, spaceBetween: 25 },
+                    1024: { slidesPerView: 4, spaceBetween: 25 },
+                    1200: { slidesPerView: 5, spaceBetween: 25 }
+                }
+            });
+        });
+
+        // Menú Hamburguesa Mobile
+        (function(){
+            const hamburgers = document.querySelectorAll('.hamburger');
+            hamburgers.forEach(btn => {
+                const nav = btn.closest('.nav-container').querySelector('.nav-menu');
+
+                const setOpen = (open) => {
+                    if(open){
+                        nav.classList.add('open');
+                        btn.setAttribute('aria-expanded','true');
+                    } else {
+                        nav.classList.remove('open');
+                        btn.setAttribute('aria-expanded','false');
+                    }
+                };
+
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = !nav.classList.contains('open');
+                    setOpen(isOpen);
+                });
+
+                nav.querySelectorAll('a').forEach(el => {
+                    el.addEventListener('click', () => setOpen(false));
+                });
+
+                document.addEventListener('click', (e) => {
+                    if(!btn.contains(e.target) && !nav.contains(e.target) && nav.classList.contains('open')){
+                        setOpen(false);
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if(e.key === 'Escape' && nav.classList.contains('open')){
+                        setOpen(false);
+                        btn.focus();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

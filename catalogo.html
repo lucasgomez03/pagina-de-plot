@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo | PLOT</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 40px 0 20px 0;
+    flex-wrap: wrap;
+  }
+  .pagination-btn {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .pagination-btn:hover {
+    background-color: #f5f5f5;
+    border-color: #bbb;
+  }
+  .pagination-btn.active {
+    background-color: #111;
+    color: #fff;
+    border-color: #111;
+  }
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    padding: 0 20px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus {
+    border-color: #333;
+  }
+    .category-filter-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        max-width: 1100px;
+        margin: 0 auto 28px;
+        padding: 0 20px;
+    }
+    .category-filter-btn {
+        border: 1px solid #d7d7d7;
+        border-radius: 999px;
+        background: #fff;
+        color: #333;
+        padding: 9px 16px;
+        cursor: pointer;
+        font: 500 .9rem 'Poppins', sans-serif;
+        transition: background-color .2s, color .2s, border-color .2s;
+    }
+    .category-filter-btn:hover,
+    .category-filter-btn.active {
+        background: #191f22;
+        border-color: #191f22;
+        color: #fff;
+    }
+  .no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 40px;
+    font-size: 1.1rem;
+    color: #666;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav-container">
+    <a href="index.html" class="logo">PLOT</a>
+
+    <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#" class="filter-btn active" data-filter="all">Todos</a></li>
+        <li>
+          <details class="category-dropdown">
+            <summary>Categorías</summary>
+            <ul>
+              <li><a href="#" class="filter-btn" data-filter="fantasia">Fantasía</a></li>
+              <li><a href="#" class="filter-btn" data-filter="romance">Romance</a></li>
+              <li><a href="#" class="filter-btn" data-filter="desarrollo">Desarrollo personal / Psicología</a></li>
+              <li><a href="#" class="filter-btn" data-filter="thriller">Terror y thriller</a></li>
+              <li><a href="#" class="filter-btn" data-filter="infantiles">Infantiles</a></li>
+              <li><a href="#" class="filter-btn" data-filter="clasicos">Clásicos e historia</a></li>
+              <li><a href="#" class="filter-btn" data-filter="otros">Otros</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="cart-toggle" aria-label="Abrir carrito de compras">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-count">0</span>
+    </button>
+  </div>
+</header>
+
+<h2 class="section-title">Nuestro catálogo</h2>
+
+<div class="search-container">
+  <input type="text" id="search-books" class="search-input" placeholder="Buscar por título o autor...">
+</div>
+
+<section class="catalog">
+<div class="container">
+
+<div id="catalog-category-filters" class="category-filter-container" role="group" aria-label="Filtrar libros por categoría"></div>
+
+<div class="book-grid" id="book-grid"></div>
+
+<div id="pagination" class="pagination-container"></div>
+
+</div>
+</section>
+
+    <footer>
+        <div class="container">
+            <h2>PLOT</h2>
+            <p>© 2026 PLOT - Todos los derechos reservados</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/plot.libros/" target="_blank" rel="noopener noreferrer" class="social-icon instagram" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/tu_pagina" target="_blank" rel="noopener noreferrer" class="social-icon facebook" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.tiktok.com/@plot.libros?lang=en" target="_blank" rel="noopener noreferrer" class="social-icon tiktok" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://listado.mercadolibre.com.ar/pagina/mz20260127202138/#component=menu_corridors&tracking_id=77a5ac54-7f8c-451b-b16d-e55846850fa1&label=Todos+los+productos&global_position=1" target="_blank" rel="noopener noreferrer" class="social-icon mercadolibre" aria-label="Mercado Libre">
+                <img src="images/ML.webp" alt="Mercado Libre" style="width: 24px; height: 24px;">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-overlay"></div>
+    <aside class="cart-panel">
+        <div class="cart-panel-header">
+            <h3>Tu carrito</h3>
+            <button class="close-cart" aria-label="Cerrar carrito">&times;</button>
+        </div>
+        <ul class="cart-items"></ul>
+        <div class="cart-panel-footer">
+            <div class="cart-subtotal-row"><span>Subtotal</span><strong class="cart-total">$0</strong></div>
+            <p class="cart-shipping-note">Envío: a coordinar en el checkout</p>
+            <button class="checkout-btn">Ir al checkout</button>
+        </div>
+    </aside>
+
+<script src="js/carrito.js"></script>
+<script>
+
+    // Base de datos de los 507 libros incorporados
+    const todosLosLibros = [{"titulo":"Demon Slayer 3","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Demon%20Slayer%203.jpg"},{"titulo":"Demon Slayer 2","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Demon%20Slayer%202.jpg"},{"titulo":"Demon Slayer 1","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Demon%20Slayer%201.jpg"},{"titulo":"Blue Lock 3","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Blue%20Lock%203.jpg"},{"titulo":"Blue Lock 2","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Blue%20Lock%202.jpg"},{"titulo":"Blue Lock 1","autor":"MANGA","categoria":"otros","precio":15000,"imagen":"imagenes/Blue%20Lock%201.jpg"},{"titulo":"El niño que dejo de ser un desastre","autor":"James Tear","categoria":"infantiles","precio":30000,"imagen":"imagenes/El%20ni%C3%B1o%20que%20dejo%20de%20ser%20un%20desastre.jpg"},{"titulo":"Pedro y la magia del pensamiento","autor":"Jose Luis Haveira","categoria":"infantiles","precio":35000,"imagen":"imagenes/Pedro%20y%20la%20magia%20del%20pensamiento.jpg"},{"titulo":"El placebo eres tu","autor":"Joe Dispenza","categoria":"desarrollo","precio":20000,"imagen":"imagenes/El%20placebo%20eres%20tu.jpg"},{"titulo":"Liderazgo","autor":"Daniel Goleman","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Liderazgo.jpg"},{"titulo":"Como dejar de desperdiciar tu vida","autor":"Mario Muñoz","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Como%20dejar%20de%20desperdiciar%20tu%20vida.jpg"},{"titulo":"Meditaciones","autor":"Marco Aurelio","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Meditaciones.jpg"},{"titulo":"Pequeñas meditaciones estoicas","autor":"Majosta","categoria":"infantiles","precio":30000,"imagen":"imagenes/Peque%C3%B1as%20meditaciones%20estoicas.jpg"},{"titulo":"Como dejar de pensar demasiado","autor":"Adam Tusco","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Como%20dejar%20de%20pensar%20demasiado.jpg"},{"titulo":"La ley de murphy para abogados","autor":"Arthur Bloch","categoria":"desarrollo","precio":23000,"imagen":"imagenes/La%20ley%20de%20murphy%20para%20abogados.jpg"},{"titulo":"El codigo del dinero","autor":"Raimon Samsó","categoria":"desarrollo","precio":22000,"imagen":"imagenes/El%20codigo%20del%20dinero.jpg"},{"titulo":"Folleto del millonario","autor":"Grant Cardone","categoria":"desarrollo","precio":18000,"imagen":"imagenes/Folleto%20del%20millonario.jpg"},{"titulo":"Las 38 cartas de Rockefeller","autor":"John Rockefeller","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Las%2038%20cartas%20de%20Rockefeller.jpg"},{"titulo":"Psicologia en ventas","autor":"Brian Tracy","categoria":"desarrollo","precio":19000,"imagen":"imagenes/Psicologia%20en%20ventas.jpg"},{"titulo":"La regla de oro en los negocios","autor":"Grant Cardone","categoria":"desarrollo","precio":29000,"imagen":"imagenes/La%20regla%20de%20oro%20en%20los%20negocios.jpg"},{"titulo":"Los secretos de la mente millonaria","autor":"T. Harv Eker","categoria":"desarrollo","precio":15000,"imagen":"imagenes/Los%20secretos%20de%20la%20mente%20millonaria.jpg"},{"titulo":"La biblia del ecommerce","autor":"Jose Luis Torres Revert","categoria":"desarrollo","precio":38000,"imagen":"imagenes/La%20biblia%20del%20ecommerce.jpg"},{"titulo":"El arte de la guerra","autor":"Sun Tsu","categoria":"clasicos","precio":25000,"imagen":"imagenes/El%20arte%20de%20la%20guerra.jpg"},{"titulo":"Metas","autor":"Brian Tracy","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Metas.jpg"},{"titulo":"Punto critico","autor":"Brian Tracy","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Punto%20critico.jpg"},{"titulo":"Centrate","autor":"Cal Newport","categoria":"desarrollo","precio":26000,"imagen":"imagenes/Centrate.jpg"},{"titulo":"Habitos atomicos en accion","autor":"James Clear","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Habitos%20atomicos%20en%20accion.jpg"},{"titulo":"Bese a ese sapo","autor":"Brian Tracy","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Bese%20a%20ese%20sapo.jpg"},{"titulo":"Antologia poetica","autor":"Mario Benedetti","categoria":"clasicos","precio":28000,"imagen":"imagenes/Antologia%20poetica.jpg"},{"titulo":"Noches Blancas","autor":"Flodor Dostoievski","categoria":"clasicos","precio":24000,"imagen":"imagenes/Noches%20Blancas.jpg"},{"titulo":"Damian","autor":"Alex Mirez","categoria":"thriller","precio":32000,"imagen":"imagenes/Damian.jpg"},{"titulo":"Coraline","autor":"Neil Gaiman","categoria":"infantiles","precio":29000,"imagen":"imagenes/coraline.jpg"},{"titulo":"Coraline - edicion ilustrada","autor":"Neil Gaiman","categoria":"infantiles","precio":30000,"imagen":"imagenes/Coraline%20-%20edicion%20ilustrada.jpg"},{"titulo":"Frankestein","autor":"Mary Shelley","categoria":"infantiles","precio":20000,"imagen":"imagenes/frankestein.jpg"},{"titulo":"El Extranjero","autor":"Albert Camus","categoria":"clasicos","precio":24000,"imagen":"imagenes/El%20Extranjero.jpg"},{"titulo":"Somnis","autor":"Kristopher Rodas","categoria":"clasicos","precio":30000,"imagen":""},{"titulo":"La odisea","autor":"Homero","categoria":"clasicos","precio":27000,"imagen":"imagenes/la%20odisea.jpg"},{"titulo":"Las palabras que jamas dije","autor":"Isabelle Miumiu","categoria":"romance","precio":28000,"imagen":"imagenes/Las%20palabras%20que%20jamas%20dije.jpg"},{"titulo":"Cronica de una muerte anunciada","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":26000,"imagen":"imagenes/Cronica%20de%20una%20muerte%20anunciada.jpg"},{"titulo":"Romeo y Julieta","autor":"William Shakespeare","categoria":"clasicos","precio":25000,"imagen":"imagenes/Romeo%20y%20Julieta.jpg"},{"titulo":"El niño con pijama de rayas","autor":"John Boyne","categoria":"clasicos","precio":22000,"imagen":"imagenes/El%20ni%C3%B1o%20con%20pijama%20de%20rayas.jpg"},{"titulo":"No tengo boca y debo gritar","autor":"Harlan Ellison","categoria":"thriller","precio":21000,"imagen":"imagenes/No%20tengo%20boca%20y%20debo%20gritar.jpg"},{"titulo":"Indigno de ser humano","autor":"Osamu Dazai","categoria":"clasicos","precio":24000,"imagen":"imagenes/Indigno%20de%20ser%20humano.jpg"},{"titulo":"El jardin de las mariposas","autor":"Dot Hutchison","categoria":"thriller","precio":27000,"imagen":"imagenes/El%20jardin%20de%20las%20mariposas.jpg"},{"titulo":"El metodo","autor":"Neil Strauss","categoria":"desarrollo","precio":24000,"imagen":"imagenes/El%20metodo.jpg"},{"titulo":"Xodo","autor":"Faty Salinas","categoria":"romance","precio":29000,"imagen":"imagenes/Xodo.jpg"},{"titulo":"No me llames loca","autor":"Gilraen Earfalas","categoria":"thriller","precio":28000,"imagen":"imagenes/No%20me%20llames%20loca.jpg"},{"titulo":"Las mujeres que aman demasiado","autor":"Robin Norwood","categoria":"desarrollo","precio":21000,"imagen":"imagenes/Las%20mujeres%20que%20aman%20demasiado.jpg"},{"titulo":"El poder de las palabras","autor":"Mariano Sigman","categoria":"desarrollo","precio":25000,"imagen":"imagenes/El%20poder%20de%20las%20palabras.jpg"},{"titulo":"Me acorde de mi y me olvide de ti","autor":"Julia Arenas","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Me%20acorde%20de%20mi%20y%20me%20olvide%20de%20ti.jpg"},{"titulo":"Mi psicologa me dijo","autor":"Katherine Hoyer","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Mi%20psicologa%20me%20dijo.jpg"},{"titulo":"Aprendiendo a amarme","autor":"Sara Espejo","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Aprendiendo%20a%20amarme.jpg"},{"titulo":"Primero yo despues el resto","autor":"Aurora S","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Primero%20yo%20despues%20el%20resto.jpg"},{"titulo":"Invisible","autor":"Eloy Moreno","categoria":"otros","precio":26000,"imagen":"imagenes/Invisible.jpg"},{"titulo":"Tiempo para vivir","autor":"Ana Perez","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Tiempo%20para%20vivir%20TAPA%20DURA.jpg"},{"titulo":"Psicologia oscura 5 en 1","autor":"R. J. Anderson","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Psicologia%20oscura%205%20en%201.jpg"},{"titulo":"Querida yo tenemos que hablar","autor":"Elizabeth Clapés","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Querida%20yo%20tenemos%20que%20hablar%20TAPA%20DURA.jpg"},{"titulo":"Querida mama me dueles","autor":"Marta Segrelles","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Querida%20mama%20me%20dueles.jpg"},{"titulo":"El hombre en busca de sentido","autor":"Viktor Frankl","categoria":"desarrollo","precio":19000,"imagen":"imagenes/El%20hombre%20en%20busca%20de%20sentido.jpg"},{"titulo":"Cartas que no llegaron","autor":"Gilraen Earfalas","categoria":"thriller","precio":23000,"imagen":"imagenes/Cartas%20que%20no%20llegaron.jpg"},{"titulo":"Por qué los hombres aman a las cabronas","autor":"Sherry Argov","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Por%20qu%C3%A9%20los%20hombres%20aman%20a%20las%20cabronas.jpg"},{"titulo":"Hermosa rendicion","autor":"Vanesa Osorio","categoria":"romance","precio":35000,"imagen":"imagenes/Hermosa%20rendicion.jpg"},{"titulo":"Re-imaginaria","autor":"Kristopher Rodas","categoria":"thriller","precio":35000,"imagen":"imagenes/Re-imaginaria.jpg"},{"titulo":"el dia que dejo de nevar en Alaska","autor":"Alice Kellen","categoria":"romance","precio":27000,"imagen":"imagenes/el%20dia%20que%20dejo%20de%20nevar%20en%20Alaska.jpg"},{"titulo":"Nosotros en la luna","autor":"Alice Kellen","categoria":"romance","precio":26000,"imagen":"imagenes/Nosotros%20en%20la%20luna.jpg"},{"titulo":"Love Song","autor":"Elle Kennedy","categoria":"romance","precio":40000,"imagen":"imagenes/Love%20Song.jpg"},{"titulo":"La metamorfosis","autor":"Franz Kafka","categoria":"clasicos","precio":20000,"imagen":"imagenes/La%20metamorfosis.jpg"},{"titulo":"100 citas juntos","autor":"-","categoria":"otros","precio":30000,"imagen":"imagenes/100%20citas%20juntos.jpg"},{"titulo":"Siempre seras un chico especial TAPA DURA","autor":"Isabella Miller","categoria":"infantiles","precio":30500,"imagen":"imagenes/Siempre%20seras%20un%20chico%20especial%20TAPA%20DURA.jpg"},{"titulo":"Autocontrol total TAPA DURA","autor":"Doris Walton","categoria":"infantiles","precio":30000,"imagen":"imagenes/Autocontrol%20total%20TAPA%20DURA.jpg"},{"titulo":"Confia en ti TAPA DURA","autor":"Curro Cañete","categoria":"infantiles","precio":25000,"imagen":"imagenes/Confia%20en%20ti%20TAPA%20DURA.jpg"},{"titulo":"Afirmaciones positivas TAPA DURA","autor":"Isabella Miller","categoria":"infantiles","precio":25000,"imagen":"imagenes/Afirmaciones%20positivas%20TAPA%20DURA.jpg"},{"titulo":"El arte de manifestar bailando TAPA DURA","autor":"Jazmin Duarte","categoria":"infantiles","precio":30000,"imagen":"imagenes/El%20arte%20de%20manifestar%20bailando%20TAPA%20DURA.jpg"},{"titulo":"El diario de la soledad TAPA DURA","autor":"Dante Montelli","categoria":"desarrollo","precio":30000,"imagen":"imagenes/El%20diario%20de%20la%20soledad%20TAPA%20DURA.jpg"},{"titulo":"50 proverbios estoicos para una buena vida TAPA DURA","autor":"Luis Leon","categoria":"desarrollo","precio":32000,"imagen":"imagenes/50%20proverbios%20estoicos%20para%20una%20buena%20vida%20TAPA%20DURA.jpg"},{"titulo":"Amor Fati TAPA DURA","autor":"Casimiro Ruiz","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Amor%20Fati%20TAPA%20DURA.jpg"},{"titulo":"Memento Mori TAPA DURA","autor":"Humberto Montesinos","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Memento%20Mori%20TAPA%20DURA.jpg"},{"titulo":"Carpe Diem TAPA DURA","autor":"Humberto Montesinos","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Carpe%20Diem%20TAPA%20DURA.jpg"},{"titulo":"Me elijo a mi TAPA DURA","autor":"Arianna Portal","categoria":"desarrollo","precio":26000,"imagen":"imagenes/Me%20elijo%20a%20mi%20TAPA%20DURA.jpg"},{"titulo":"Querida yo tenemos que hablar TAPA DURA","autor":"Elizabeth Clapes","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Querida%20yo%20tenemos%20que%20hablar%20TAPA%20DURA.jpg"},{"titulo":"Los hombres son de marte las mujeres son de venus TAPA DURA","autor":"John Gray PhD","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"Todo lo que las mujeres deben saber sobre los hombres TAPA DURA","autor":"Victoire Charlie","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Todo%20lo%20que%20las%20mujeres%20deben%20saber%20sobre%20los%20hombres%20TAPA%20DURA.jpg"},{"titulo":"Tiempo para vivir TAPA DURA","autor":"Ana Perez","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Tiempo%20para%20vivir%20TAPA%20DURA.jpg"},{"titulo":"Las 7 claves para manifestar tus sueños TAPA DURA","autor":"Ediciones Dejavu","categoria":"desarrollo","precio":40000,"imagen":""},{"titulo":"Como hacer que te pasen cosas buenas TAPA DURA","autor":"Marian Rojas Estapé","categoria":"desarrollo","precio":35000,"imagen":"imagenes/Como%20hacer%20que%20te%20pasen%20cosas%20buenas%20TAPA%20DURA.jpg"},{"titulo":"Recupera tu mente, reconquista tu vida TAPA DURA","autor":"Marian Rojas Estapé","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Recupera%20tu%20mente%2C%20reconquista%20tu%20vida%20TAPA%20DURA.jpg"},{"titulo":"El millonario de la puerta de al lado TAPA DURA","autor":"Thomas J Stanley","categoria":"desarrollo","precio":28000,"imagen":"imagenes/El%20millonario%20de%20la%20puerta%20de%20al%20lado%20TAPA%20DURA.jpg"},{"titulo":"TDAH TAPA DURA","autor":"-","categoria":"otros","precio":29000,"imagen":""},{"titulo":"Tomate un respiro TAPA DURA","autor":"Mario Alonso Puig","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"Libera tu mente TAPA DURA","autor":"Elysia Lune","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Libera%20tu%20mente%20TAPA%20DURA.jpg"},{"titulo":"Circe","autor":"Madeline Miller","categoria":"clasicos","precio":25000,"imagen":"imagenes/circe.jpg"},{"titulo":"el color de las cosas invisibles","autor":"Andrea Longarela","categoria":"romance","precio":31000,"imagen":"imagenes/el%20color%20de%20las%20cosas%20invisibles.jpg"},{"titulo":"tras el hielo","autor":"Stephanie Archer","categoria":"romance","precio":27000,"imagen":"imagenes/tras%20el%20hielo.jpg"},{"titulo":"La asistenta","autor":"Freida McFadden","categoria":"thriller","precio":29000,"imagen":"imagenes/La%20asistenta.jpg"},{"titulo":"reino zafiro","autor":"Tae Kim","categoria":"romance","precio":25000,"imagen":""},{"titulo":"el perfume del rey","autor":"Karine Bernal Lobo","categoria":"romance","precio":25000,"imagen":"imagenes/el%20perfume%20del%20rey.jpg"},{"titulo":"el secreto de la asistenta","autor":"Freida McFadden","categoria":"thriller","precio":29000,"imagen":"imagenes/el%20secreto%20de%20la%20asistenta.jpg"},{"titulo":"Lazos de fuego","autor":"Fire Ties Saxney","categoria":"fantasia","precio":35000,"imagen":"imagenes/Lazos%20de%20fuego.jpg"},{"titulo":"corazon de piedra","autor":"Lucia G Sobrado","categoria":"fantasia","precio":33000,"imagen":"imagenes/corazon%20de%20piedra.jpg"},{"titulo":"Phantasma","autor":"Kaylie Smith","categoria":"thriller","precio":33000,"imagen":"imagenes/Phantasma.jpg"},{"titulo":"el castillo en el aire","autor":"Diana Wynne Jones","categoria":"fantasia","precio":33000,"imagen":"imagenes/el%20castillo%20en%20el%20aire.jpg"},{"titulo":"Los ojos de plata (5 nights at Freddys)","autor":"Scott Canthon","categoria":"infantiles","precio":28000,"imagen":"imagenes/Los%20ojos%20de%20plata%20%285%20nights%20at%20Freddys%29.jpg"},{"titulo":"Carrie","autor":"Stephen King","categoria":"thriller","precio":33000,"imagen":"imagenes/Carrie.jpg"},{"titulo":"Pensar rapido pensar despacio","autor":"Daniel Kahneman","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Pensar%20rapido%20pensar%20despacio.jpg"},{"titulo":"Will","autor":"Will Smith","categoria":"otros","precio":25000,"imagen":"imagenes/Will.jpg"},{"titulo":"Ventas salvajes 1","autor":"Sandro Melendez","categoria":"desarrollo","precio":35000,"imagen":"imagenes/Ventas%20salvajes%201.jpg"},{"titulo":"Ventas salvajes 2","autor":"Sandro Melendez","categoria":"desarrollo","precio":35000,"imagen":"imagenes/Ventas%20salvajes%202.jpg"},{"titulo":"el arte de la seduccion","autor":"Robert Greene","categoria":"desarrollo","precio":33000,"imagen":"imagenes/el%20arte%20de%20la%20seduccion.jpg"},{"titulo":"Las leyes del poder","autor":"Robert Greene","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Las%20leyes%20del%20poder.jpg"},{"titulo":"Las leyes de la naturaleza humana","autor":"Robert Greene","categoria":"desarrollo","precio":35000,"imagen":"imagenes/Las%20leyes%20de%20la%20naturaleza%20humana.jpg"},{"titulo":"El mundo de Sofia","autor":"Jostein Gaarder","categoria":"infantiles","precio":36000,"imagen":"imagenes/El%20mundo%20de%20Sofia.jpg"},{"titulo":"Tan poca vida TAPA DURA","autor":"Hania Yanagihara","categoria":"otros","precio":38000,"imagen":"imagenes/Tan%20poca%20vida%20TAPA%20DURA.jpg"},{"titulo":"Los ecos de Jude","autor":"Joana Marcus","categoria":"romance","precio":35000,"imagen":"imagenes/Los%20ecos%20de%20Jude.jpg"},{"titulo":"Etereo TAPA DURA","autor":"Joana Marcus","categoria":"romance","precio":40000,"imagen":"imagenes/Etereo%20TAPA%20DURA.jpg"},{"titulo":"Diabetes sin problemas","autor":"Frank Suarez","categoria":"otros","precio":35000,"imagen":"imagenes/Diabetes%20sin%20problemas.jpg"},{"titulo":"alas de ensueño TAPA DURA","autor":"Disney","categoria":"infantiles","precio":33000,"imagen":"imagenes/alas%20de%20ensue%C3%B1o%20TAPA%20DURA.jpg"},{"titulo":"Cementerio de animales","autor":"Stephen King","categoria":"thriller","precio":33000,"imagen":"imagenes/Cementerio%20de%20animales.jpg"},{"titulo":"Saga HeartStopper (5 libros)","autor":"Alice Oseman","categoria":"romance","precio":95000,"imagen":"imagenes/Saga%20HeartStopper%20%285%20libros%29.jpg"},{"titulo":"Saga Eva Muñoz (2 libros)","autor":"Eva Muñoz","categoria":"romance","precio":50000,"imagen":"imagenes/Saga%20Eva%20Mu%C3%B1oz%20%282%20libros%29.jpg"},{"titulo":"Saga Caraval (3 libros)","autor":"Stephanie Garber","categoria":"fantasia","precio":75000,"imagen":"imagenes/Saga%20Caraval%20%283%20libros%29.jpg"},{"titulo":"Saga Twisted (4 libros)","autor":"Ana Huang","categoria":"romance","precio":90000,"imagen":"imagenes/Saga%20Twisted%20%284%20libros%29.jpg"},{"titulo":"Saga Ragnarok (2 libros tapa dura)","autor":"D A Roberts","categoria":"thriller","precio":55000,"imagen":""},{"titulo":"Saga alas de sangre (3 libros)","autor":"Rebecca Yarros","categoria":"fantasia","precio":85000,"imagen":"imagenes/Saga%20alas%20de%20sangre%20%283%20libros%29.jpg"},{"titulo":"Saga Percy Jackson (3 libros)","autor":"Rick Riordan","categoria":"fantasia","precio":70000,"imagen":""},{"titulo":"Anatomia Humana (2 tomos tapa dura)","autor":"Latarjet","categoria":"otros","precio":150000,"imagen":""},{"titulo":"Globalismo","autor":"Agustin Laje","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Globalismo.jpg"},{"titulo":"generacion idiota","autor":"Agustin Laje","categoria":"desarrollo","precio":23000,"imagen":"imagenes/generacion%20idiota%20agustin%20laje.jpg"},{"titulo":"la batalla cultural","autor":"Agustin Laje","categoria":"desarrollo","precio":28000,"imagen":"imagenes/la%20batalla%20cultural.jpg"},{"titulo":"como dejar de ser tu peor enemigo","autor":"Alba Cardalda","categoria":"desarrollo","precio":28000,"imagen":"imagenes/como%20dejar%20de%20ser%20tu%20peor%20enemigo.jpg"},{"titulo":"una vida sin salud mental","autor":"Alba Cardalda","categoria":"desarrollo","precio":20000,"imagen":"imagenes/una%20vida%20sin%20salud%20mental.jpg"},{"titulo":"Cicatrices que aun duelen","autor":"Alba Cardalda","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Cicatrices%20que%20aun%20duelen.jpg"},{"titulo":"Poesia completa","autor":"Alejandra Pizarnik","categoria":"clasicos","precio":30000,"imagen":""},{"titulo":"manipulacion y psicologia oscura","autor":"Alejandro Mendoza","categoria":"desarrollo","precio":35000,"imagen":"imagenes/manipulacion%20y%20psicologia%20oscura.jpg"},{"titulo":"el desafio del amor","autor":"Alex Kendrick","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"uno siempre cambia al amor de su vida","autor":"Amalia Andrade","categoria":"desarrollo","precio":29000,"imagen":"imagenes/uno%20siempre%20cambia%20al%20amor%20de%20su%20vida.jpg"},{"titulo":"el diario de ana frank","autor":"Ana Frank","categoria":"clasicos","precio":26000,"imagen":""},{"titulo":"Dioses y heroes de la mitologia griega","autor":"Ana Maria Shua","categoria":"clasicos","precio":32000,"imagen":"imagenes/Dioses%20y%20heroes%20de%20la%20mitologia%20griega.jpg"},{"titulo":"Cuidate para crecer","autor":"Ana Perez","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Cuidate%20para%20crecer.jpg"},{"titulo":"lo bueno de tener un mal dia","autor":"Anabel Gonzalez","categoria":"desarrollo","precio":30000,"imagen":"imagenes/lo%20bueno%20de%20tener%20un%20mal%20dia.jpg"},{"titulo":"El principito","autor":"Antoine de Saint Exupery","categoria":"infantiles","precio":20000,"imagen":"imagenes/El%20principito.jpg"},{"titulo":"Roba como un artista","autor":"Austin Kleon","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Roba%20como%20un%20artista.jpg"},{"titulo":"Miel","autor":"Azrael Kass","categoria":"otros","precio":32000,"imagen":"imagenes/Miel.jpg"},{"titulo":"El metodo briones","autor":"Beltran Briones","categoria":"desarrollo","precio":19000,"imagen":"imagenes/El%20metodo%20briones.jpg"},{"titulo":"las leyes del poder","autor":"Brian Tracy","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Las%20leyes%20del%20poder.jpg"},{"titulo":"habla menos actua mas","autor":"Brian Tracy","categoria":"desarrollo","precio":20000,"imagen":"imagenes/habla%20menos%20actua%20mas.jpg"},{"titulo":"habitos para ser millonario","autor":"Brian Tracy","categoria":"desarrollo","precio":25000,"imagen":"imagenes/habitos%20para%20ser%20millonario.jpg"},{"titulo":"Emprende tu propio negocio","autor":"Brian Tracy","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Emprende%20tu%20propio%20negocio.jpg"},{"titulo":"Las leyes de la suerte","autor":"Brian Tracy","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Las%20leyes%20de%20la%20suerte.jpg"},{"titulo":"Traguese ese sapo","autor":"Brian Tracy","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"Manos a la obra","autor":"Brian Tracy","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Manos%20a%20la%20obra.jpg"},{"titulo":"Pasos de gigante","autor":"Brian Tracy","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Pasos%20de%20gigante.jpg"},{"titulo":"Despierta tu inteligencia","autor":"Brian Tracy","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Despierta%20tu%20inteligencia.jpg"},{"titulo":"la montaña eres tu","autor":"Briana Wiest","categoria":"desarrollo","precio":20000,"imagen":"imagenes/la%20monta%C3%B1a%20eres%20tu%20.jpg"},{"titulo":"La vaca","autor":"Camilo Cruz","categoria":"desarrollo","precio":44000,"imagen":""},{"titulo":"el poder de los habitos","autor":"Charles Duig","categoria":"desarrollo","precio":22000,"imagen":"imagenes/el%20poder%20de%20los%20habitos.jpg"},{"titulo":"Vuelvo a mi","autor":"Chloe Miel","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Vuelvo%20a%20mi.jpg"},{"titulo":"Charlas TED","autor":"Chris Anderson","categoria":"otros","precio":28000,"imagen":"imagenes/Charlas%20TED.jpg"},{"titulo":"Ella y el","autor":"Chris Braund","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"La teoria de la relatividad","autor":"Crhistian Daniel","categoria":"otros","precio":30000,"imagen":""},{"titulo":"Como suprimir las preocupaciones y disfrutar de la vida","autor":"Dale Carnegie","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"El arte de hablar en publico","autor":"Dale Carnegie","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"El laberinto del dinotauro","autor":"Dani y Evan","categoria":"infantiles","precio":28000,"imagen":""},{"titulo":"El liderazgo","autor":"Daniel Goleman","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"Disciplina sin lagrimas","autor":"Daniel Siegel","categoria":"desarrollo","precio":26000,"imagen":""},{"titulo":"El cerebro del niño","autor":"Daniel Siegel","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"Hablando sola","autor":"Daniela Rivera","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"El camino del hombre superior","autor":"David Deida","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"El secreto de las siete semillas","autor":"David Fischman","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"No me puedes lastimar","autor":"David Goggings","categoria":"desarrollo","precio":22000,"imagen":"imagenes/No%20me%20puedes%20lastimar.jpg"},{"titulo":"Nunca terminar","autor":"David Goggings","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"Una breve historia de la adolescencia","autor":"David Le Breton","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"La magia de pensar en grande","autor":"Davida Schwartz","categoria":"desarrollo","precio":19000,"imagen":""},{"titulo":"Frozen 2","autor":"Disney","categoria":"infantiles","precio":19000,"imagen":""},{"titulo":"Iniciacion al liderazgo TAPA DURA","autor":"Doris Walton","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"Las venas abiertas de america latina","autor":"Eduardo Galeano","categoria":"clasicos","precio":29000,"imagen":""},{"titulo":"Tu no eres el problema","autor":"Elizabeth Clapes","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"el nuevo viaje del principito","autor":"Eloy Moreno","categoria":"infantiles","precio":23000,"imagen":""},{"titulo":"Redes","autor":"Eloy Moreno","categoria":"otros","precio":25000,"imagen":""},{"titulo":"Perderte para encontrarme","autor":"Elizabeth Clapes","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"El viejo y el mar","autor":"Ernest Hemingway","categoria":"clasicos","precio":19000,"imagen":""},{"titulo":"El tunel","autor":"Ernesto Sabato","categoria":"clasicos","precio":21000,"imagen":""},{"titulo":"mi psicologa y yo","autor":"Fani Guerrero","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"Sobreviviendo con un corazon roto","autor":"Faty Salinas","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"El poder del metabolismo","autor":"Frank Suarez","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"El coronel no tiene quien le escriba","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":24000,"imagen":""},{"titulo":"memorias de mis putas tristes","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":28000,"imagen":""},{"titulo":"del amor y otros demonios","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":27000,"imagen":""},{"titulo":"Relato de un naufrago","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":23000,"imagen":""},{"titulo":"los padecientes","autor":"Gabriel Rolon","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"rebelion en la granja","autor":"George Orwell","categoria":"clasicos","precio":19000,"imagen":""},{"titulo":"mente millonaria","autor":"Gerardo Garcia Manjarrez","categoria":"desarrollo","precio":22000,"imagen":""},{"titulo":"de dios para ti TAPA DURA","autor":"Gia Moretti","categoria":"desarrollo","precio":29000,"imagen":"imagenes/De%20Dios%20para%20ti.jpg"},{"titulo":"Cuentos para un amigo con gripe","autor":"Giancarla Quiroga","categoria":"infantiles","precio":24000,"imagen":""},{"titulo":"Cantame al dormir","autor":"Gilraen Earfalas","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"eres el amor de mi otra vida","autor":"Gilraen Earfalas","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"llamame cuando no te encuentres","autor":"Gilaraen Earfalas","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"basta de amores de mierda 2","autor":"El Pela Gonzalo Romero","categoria":"desarrollo","precio":26000,"imagen":""},{"titulo":"el folleto del millonario","autor":"Grant Cardone","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Folleto%20del%20millonario.jpg"},{"titulo":"codigo bushido","autor":"H I Samorano","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"trading en la zona","autor":"Hark Douglas","categoria":"desarrollo","precio":35000,"imagen":""},{"titulo":"mentalidad de riqueza","autor":"Harriet Hale Rix","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"El libro de la sabiduria","autor":"Harry Joseph","categoria":"desarrollo","precio":40000,"imagen":""},{"titulo":"Ikigai","autor":"Hector Garcia","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"Manual de funcionamiento ejecutivo para niños con tdah","autor":"Helyan Yorke","categoria":"otros","precio":30000,"imagen":""},{"titulo":"Siddarta","autor":"Herman Hesse","categoria":"clasicos","precio":22000,"imagen":""},{"titulo":"La tienda de los deseos","autor":"Hiyoko Kurisu","categoria":"fantasia","precio":29000,"imagen":""},{"titulo":"La Iliada","autor":"Homero","categoria":"clasicos","precio":20000,"imagen":""},{"titulo":"Memento Mori","autor":"Humberto Montesinos","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Memento%20Mori%20TAPA%20DURA.jpg"},{"titulo":"La casa de los espiritus","autor":"Isabel Allende","categoria":"clasicos","precio":29000,"imagen":""},{"titulo":"El zorro","autor":"Isabel Allende","categoria":"clasicos","precio":30000,"imagen":""},{"titulo":"la ciudad de las bestias","autor":"Isabel Allende","categoria":"fantasia","precio":24000,"imagen":""},{"titulo":"Amar tambien es dejar ir","autor":"Isabel Mercer","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"Merezco mucho mas","autor":"Isabel Mercer","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"Vivir sin miedo","autor":"Isabel Mercer","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"Siempre seras especial","autor":"Isabella Miller","categoria":"infantiles","precio":29000,"imagen":"imagenes/Siempre%20seras%20un%20chico%20especial%20TAPA%20DURA.jpg"},{"titulo":"Eres unica","autor":"Isabella Miller","categoria":"infantiles","precio":29000,"imagen":""},{"titulo":"Eres unico","autor":"Isabella Miller","categoria":"infantiles","precio":29000,"imagen":""},{"titulo":"Naciste para brillar","autor":"Isabella Miller","categoria":"infantiles","precio":29000,"imagen":""},{"titulo":"Spreen","autor":"Ivan Buhaje","categoria":"otros","precio":25000,"imagen":""},{"titulo":"No soy ansioso","autor":"Ivan Nesteruk","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"Tu eres tu prioridad","autor":"Jaden Finn","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"Orgullo y prejuicio","autor":"Jane Austen","categoria":"clasicos","precio":20000,"imagen":""},{"titulo":"Si no te amas nadie te amará","autor":"Jazmin Duarte","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"El niño con pijama de rayas","autor":"Jhon Boyne","categoria":"clasicos","precio":22000,"imagen":"imagenes/El%20ni%C3%B1o%20con%20pijama%20de%20rayas.jpg"},{"titulo":"Bajo la misma estrella","autor":"John Green","categoria":"romance","precio":28000,"imagen":""},{"titulo":"el pequeño libro del estoicismo","autor":"Jonas Salzgeber","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"El camino de las lagrimas","autor":"Jorge Bucai","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"el gran engaño del dinero","autor":"Jose Luis Haveira","categoria":"desarrollo","precio":35000,"imagen":""},{"titulo":"velero de cristal","autor":"Jose Mauro de Vasconce","categoria":"infantiles","precio":20000,"imagen":""},{"titulo":"una vida extraordinaria","autor":"Juan Benigno","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"Pedro paramo","autor":"Juan Rulfo","categoria":"clasicos","precio":27000,"imagen":""},{"titulo":"Valentia","autor":"Kelvin Torres","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"Valentia 2","autor":"Kelvin Torres","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"Destroza este diario","autor":"Keri Smith","categoria":"infantiles","precio":20000,"imagen":""},{"titulo":"Destroza este diario stitch","autor":"Keri Smith","categoria":"infantiles","precio":25000,"imagen":""},{"titulo":"Destroza reste horrocruz HARRY POTTER","autor":"Kari Smith","categoria":"infantiles","precio":25000,"imagen":""},{"titulo":"El diario de Greg 4","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 7","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 8","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 9","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 11","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 16","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"El diario de Greg 20","autor":"Kinney","categoria":"infantiles","precio":30000,"imagen":""},{"titulo":"Imaginaria","autor":"Kristoper Rodas","categoria":"desarrollo","precio":24000,"imagen":""},{"titulo":"Ex novio","autor":"Kristoper Rodas","categoria":"thriller","precio":29000,"imagen":""},{"titulo":"Noctis","autor":"Kristoper Rodas","categoria":"thriller","precio":34000,"imagen":""},{"titulo":"Doemi","autor":"Kristoper Rodas","categoria":"thriller","precio":34000,"imagen":""},{"titulo":"Ex novio 2","autor":"Kristoper Rodas","categoria":"thriller","precio":29000,"imagen":""},{"titulo":"Dientes de madera","autor":"Kristoper Rodas","categoria":"thriller","precio":34000,"imagen":""},{"titulo":"El lugar mas triste del mundo","autor":"Kristoper Rodas","categoria":"thriller","precio":34000,"imagen":"imagenes/El%20lugar%20mas%20triste%20del%20mundo.jpg"},{"titulo":"te vas a morir y todavia no has empezado a vivir","autor":"Laura Falces","categoria":"desarrollo","precio":28000,"imagen":"imagenes/te%20vas%20a%20morir%20y%20todavia%20no%20has%20empezado%20a%20vivir.jpg"},{"titulo":"Y el lobo feroz","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/Y%20el%20lobo%20feroz.jpg"},{"titulo":"Vs HACKERS","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/Vs%20HACKERS.jpg"},{"titulo":"El diamantito legendario","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/El%20diamantito%20legendario.jpg"},{"titulo":"Y la entidad Exe","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/Y%20la%20entidad%20Exe.jpg"},{"titulo":"Perdidos en el espacio","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/Perdidos%20en%20el%20espacio.jpg"},{"titulo":"Sobreviviendo 100 dias","autor":"Los compas","categoria":"infantiles","precio":30000,"imagen":"imagenes/Sobreviviendo%20100%20dias.jpg"},{"titulo":"Usted puede sanar su vida","autor":"Louise Hay","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"Gratitud","autor":"Louise Hay","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"Sana tu cuerpo","autor":"Louise Hay","categoria":"desarrollo","precio":20000,"imagen":""},{"titulo":"Mentalidad de titan","autor":"Ñios F Soto","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Mentalidad%20de%20titan.jpg"},{"titulo":"Nadie tiene que saberlo excepto tu","autor":"Madame Rouge","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Nadie%20tiene%20que%20saberlo%20excepto%20tu%20.jpg"},{"titulo":"Nadie puede salvarte excepto tu","autor":"Madame Rouge","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Nadie%20puede%20salvarte%20excepto%20tu%20.jpg"},{"titulo":"Yo soy malala","autor":"Malala Yousafzai","categoria":"clasicos","precio":30000,"imagen":"imagenes/Yo%20soy%20malala.jpg"},{"titulo":"El hombre que calculaba","autor":"Malba Tahan","categoria":"clasicos","precio":21000,"imagen":""},{"titulo":"me quiero te quiero","autor":"Maria Escalpez","categoria":"desarrollo","precio":21000,"imagen":"imagenes/me%20quiero%20te%20quiero.jpg"},{"titulo":"Como hacer que te pasen cosas buenas","autor":"Marian Rojas Estapé","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Como%20hacer%20que%20te%20pasen%20cosas%20buenas%20TAPA%20DURA.jpg"},{"titulo":"En todos mis universos","autor":"Marianella Dos Santos","categoria":"romance","precio":35000,"imagen":"imagenes/En%20todos%20mis%20universos.jpg"},{"titulo":"Donde viven las musas","autor":"Marianella Dos Santos","categoria":"romance","precio":35000,"imagen":"imagenes/Donde%20viven%20las%20musas.jpg"},{"titulo":"la vida secreta de la mente","autor":"Mariano Sigman","categoria":"desarrollo","precio":26000,"imagen":"imagenes/la%20vida%20secreta%20de%20la%20mente.jpg"},{"titulo":"tres perros salvajes","autor":"Markus Zusak","categoria":"desarrollo","precio":30000,"imagen":"imagenes/tres%20perros%20salvajes.jpg"},{"titulo":"abraza a la niña que fuiste","autor":"Marta Segrelles","categoria":"desarrollo","precio":19000,"imagen":"imagenes/abraza%20a%20la%20ni%C3%B1a%20que%20fuiste.jpg"},{"titulo":"El tren de la medianoche","autor":"Matt Haig","categoria":"fantasia","precio":27000,"imagen":"imagenes/El%20tren%20de%20la%20medianoche.jpg"},{"titulo":"Cosas que nunca hable con mi madre","autor":"Michele Filgate","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Cosas%20que%20nunca%20hable%20con%20mi%20madre.jpg"},{"titulo":"Mentalidad Topuria","autor":"Miguel Blazquez","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Mentalidad%20Topuria.jpg"},{"titulo":"Don quijote de la mancha","autor":"Miguel Cervantes","categoria":"clasicos","precio":21000,"imagen":""},{"titulo":"Aperturas de ajedrez","autor":"Miguel Illesca","categoria":"otros","precio":30000,"imagen":""},{"titulo":"Molas mucho","autor":"Miriam Tirado","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Molas%20mucho.jpg"},{"titulo":"La psicologia del dinero","autor":"Morgan Housel","categoria":"desarrollo","precio":20000,"imagen":"imagenes/La%20psicologia%20del%20dinero.jpg"},{"titulo":"lo que nunca cambia en un mundo cambiante","autor":"Morgan Housel","categoria":"desarrollo","precio":26000,"imagen":"imagenes/lo%20que%20nunca%20cambia%20en%20un%20mundo%20cambiante%20.jpg"},{"titulo":"el arte de gastar dinero","autor":"Morgan Housel","categoria":"desarrollo","precio":30000,"imagen":"imagenes/el%20arte%20de%20gastar%20dinero.jpg"},{"titulo":"Vuelvete un lujo, no una opcion","autor":"Mujer Alfa","categoria":"desarrollo","precio":35000,"imagen":""},{"titulo":"Ella y su gato","autor":"Naruki Nagakawa","categoria":"otros","precio":30000,"imagen":"imagenes/Ella%20y%20su%20gato.jpg"},{"titulo":"Invierte en ti","autor":"Natalia de Santiago","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Invierte%20en%20ti.jpg"},{"titulo":"la alegria de decir no","autor":"Natalie Lue","categoria":"desarrollo","precio":30000,"imagen":"imagenes/la%20alegria%20de%20decir%20no.jpg"},{"titulo":"Conversaciones con Dios para jovenes","autor":"Neale Donald","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"El principe","autor":"Nicolas Maquiavelo","categoria":"clasicos","precio":20000,"imagen":"imagenes/El%20principe.jpg"},{"titulo":"El desamor que jamas vivi","autor":"Olga Gonzales","categoria":"romance","precio":28000,"imagen":"imagenes/El%20desamor%20que%20jamas%20vivi.jpg"},{"titulo":"El retrato de Dorian Grey","autor":"Oscar Wilde","categoria":"clasicos","precio":21000,"imagen":""},{"titulo":"Dentro del juego del calamar","autor":"Park Minjoon","categoria":"otros","precio":19000,"imagen":"imagenes/Dentro%20del%20juego%20del%20calamar.jpg"},{"titulo":"El alquimista","autor":"Paulo Cohello","categoria":"desarrollo","precio":25000,"imagen":"imagenes/El%20alquimista.jpg"},{"titulo":"Manual del guerrero de la luz","autor":"Paulo Cohello","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"De cero a uno","autor":"Pether Tiel","categoria":"desarrollo","precio":21000,"imagen":"imagenes/De%20cero%20a%20uno.jpg"},{"titulo":"Del amor propio al amor otro","autor":"Pilar Sordo","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Del%20amor%20propio%20al%20amor%20otro.jpg"},{"titulo":"la libertad de ser quien soy","autor":"Pilar Sordo","categoria":"desarrollo","precio":31000,"imagen":""},{"titulo":"lecciones de seduccion","autor":"Pilar Sordo","categoria":"desarrollo","precio":35000,"imagen":""},{"titulo":"no quiero crecer","autor":"Pilar Sordo","categoria":"desarrollo","precio":33000,"imagen":""},{"titulo":"Callalo","autor":"Prycken","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Callalo.jpg"},{"titulo":"La leccion de August","autor":"R J Palacios","categoria":"infantiles","precio":29000,"imagen":"imagenes/La%20leccion%20de%20August.jpg"},{"titulo":"El arte de no amargarse la vida","autor":"Rafael Santandreu","categoria":"desarrollo","precio":38000,"imagen":"imagenes/El%20arte%20de%20no%20amargarse%20la%20vida.jpg"},{"titulo":"Farenheit 451","autor":"Ray Bradbury","categoria":"clasicos","precio":27000,"imagen":"imagenes/fahrenheit%20451.jpg"},{"titulo":"Manda el miedo a la mierda","autor":"Rene Montaño","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Manda%20el%20miedo%20a%20la%20mierda.jpg"},{"titulo":"El secreto","autor":"Rhonda Byrne","categoria":"desarrollo","precio":31000,"imagen":"imagenes/El%20secreto%20%20.jpg"},{"titulo":"No te ahogues en un vaso de agua para adolescentes","autor":"Richard Carlson","categoria":"desarrollo","precio":22000,"imagen":""},{"titulo":"Matilda","autor":"Roal Dahl","categoria":"infantiles","precio":33000,"imagen":""},{"titulo":"Padre rico padre pobre","autor":"Robert Kiyosaki","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Padre%20rico%20padre%20pobre.jpg"},{"titulo":"Familia rica familia lista","autor":"Robert Kiyosaki","categoria":"desarrollo","precio":31000,"imagen":"imagenes/Familia%20rica%20familia%20lista.jpg"},{"titulo":"Escuela de negocios","autor":"Robert Kiyosaki","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Escuela%20de%20negocios.jpg"},{"titulo":"El negocio del siglo 21","autor":"Robert Kiyosaki","categoria":"desarrollo","precio":25000,"imagen":"imagenes/El%20negocio%20del%20siglo%2021.jpg"},{"titulo":"El extraño caso del dr jeckyll y mr Hyde","autor":"Robert Stevenson","categoria":"clasicos","precio":21000,"imagen":""},{"titulo":"el lider que no tenia cargo","autor":"Robin Sharma","categoria":"desarrollo","precio":28000,"imagen":"imagenes/el%20lider%20que%20no%20tenia%20cargo.jpg"},{"titulo":"el club de las 5 am","autor":"Robin Sharma","categoria":"desarrollo","precio":25000,"imagen":"imagenes/el%20club%20de%20las%205%20am.jpg"},{"titulo":"la riqueza que el dinero no puede comprar","autor":"Robin Sharma","categoria":"desarrollo","precio":22000,"imagen":"imagenes/la%20riqueza%20que%20el%20dinero%20no%20puede%20comprar.jpg"},{"titulo":"Vive ligeros","autor":"Ronan Burton","categoria":"desarrollo","precio":35000,"imagen":"imagenes/Vive%20ligeros.jpg"},{"titulo":"Latidos que no dije","autor":"Roos","categoria":"romance","precio":23000,"imagen":"imagenes/Latidos%20que%20no%20dije.jpg"},{"titulo":"Lucas una aventura en cuatro patas","autor":"Rudy Terceros","categoria":"infantiles","precio":25000,"imagen":""},{"titulo":"la disciplina marcara tu destino","autor":"Ryan Holiday","categoria":"desarrollo","precio":21000,"imagen":"imagenes/la%20disciplina%20marcara%20tu%20destino.jpg"},{"titulo":"la llamada del coraje","autor":"Ryan Holiday","categoria":"desarrollo","precio":30000,"imagen":"imagenes/la%20llamada%20del%20coraje.jpg"},{"titulo":"la quietud es la clave","autor":"Ryan Holiday","categoria":"desarrollo","precio":25000,"imagen":"imagenes/la%20quietud%20es%20la%20clave.jpg"},{"titulo":"cartas a lucilio","autor":"Seneca","categoria":"clasicos","precio":20000,"imagen":"imagenes/cartas%20a%20lucilio.jpg"},{"titulo":"Esto es marketing","autor":"Seth Godin","categoria":"otros","precio":35000,"imagen":"imagenes/Esto%20es%20marketing.jpg"},{"titulo":"De ti para mi","autor":"Sofia Parra","categoria":"desarrollo","precio":25000,"imagen":"imagenes/De%20ti%20para%20mi.jpg"},{"titulo":"El gato que amaba los libros","autor":"Sosuke Natsukawa","categoria":"fantasia","precio":30000,"imagen":"imagenes/El%20gato%20que%20amaba%20los%20libros.jpg"},{"titulo":"El gato que cuidaba las bibliotecas","autor":"Sosuke Natsukawa","categoria":"fantasia","precio":30000,"imagen":"imagenes/El%20gato%20que%20cuidaba%20las%20bibliotecas.jpg"},{"titulo":"El arte de la guerra para niños","autor":"Sun Tzu","categoria":"clasicos","precio":29000,"imagen":"imagenes/El%20arte%20de%20la%20guerra%20para%20ni%C3%B1os.jpg"},{"titulo":"Te receto un gato","autor":"Syou Ishida","categoria":"fantasia","precio":35000,"imagen":"imagenes/Te%20receto%20un%20gato.jpg"},{"titulo":"mil besos tuyos","autor":"Tillie Colle","categoria":"romance","precio":25000,"imagen":"imagenes/mil%20besos%20tuyos.jpg"},{"titulo":"Cuando el cafe este listo","autor":"Toshikazu Kawaguchi","categoria":"fantasia","precio":30000,"imagen":"imagenes/Cuando%20el%20cafe%20este%20listo.jpg"},{"titulo":"La felicidad cabe en una taza de cafe","autor":"Toshikazu Kawaguchi","categoria":"fantasia","precio":30000,"imagen":"imagenes/La%20felicidad%20cabe%20en%20una%20taza%20de%20cafe.jpg"},{"titulo":"el primer cafe del dia","autor":"Toshikazu Kawaguchi","categoria":"fantasia","precio":30000,"imagen":"imagenes/el%20primer%20cafe%20del%20dia.jpg"},{"titulo":"hasta el proximo cafe","autor":"Toshikazu Kawaguchi","categoria":"fantasia","precio":30000,"imagen":"imagenes/hasta%20el%20proximo%20cafe.jpg"},{"titulo":"33 dias de manifestacion","autor":"Ulises Sampa","categoria":"desarrollo","precio":35000,"imagen":"imagenes/33%20dias%20de%20manifestacion.jpg"},{"titulo":"Como no vas a poder","autor":"Virginia Canterla","categoria":"desarrollo","precio":35000,"imagen":""},{"titulo":"Desapegarse sin anestesia","autor":"Walter Riso","categoria":"desarrollo","precio":33000,"imagen":"imagenes/Desapegarse%20sin%20anestesia.jpg"},{"titulo":"Deshojando Margaritas","autor":"Walter Riso","categoria":"desarrollo","precio":33000,"imagen":""},{"titulo":"Construye tu destino","autor":"Wayne W Dier","categoria":"desarrollo","precio":32000,"imagen":"imagenes/construye%20tu%20destino.jpg"},{"titulo":"El señor de las moskas","autor":"William Golding","categoria":"clasicos","precio":20000,"imagen":""},{"titulo":"Tiende tu cama","autor":"William McRaver","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Tiende%20tu%20cama.jpg"},{"titulo":"Jonas y la ballena rosada","autor":"Wolfango Montes","categoria":"clasicos","precio":26000,"imagen":""},{"titulo":"Contra ataque a los 30","autor":"Won Pyung Sohn","categoria":"otros","precio":30000,"imagen":"imagenes/Contra%20ataque%20a%20los%2030.jpg"},{"titulo":"Salon 8","autor":"Yokoi Kenji Diaz","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Salon%208.jpg"},{"titulo":"Conviertete en un orador de 7 cifras","autor":"Yudis Lonzoy","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Conviertete%20en%20un%20orador%20de%207%20cifras.jpg"},{"titulo":"100 citas juntos","autor":"-","categoria":"otros","precio":32000,"imagen":"imagenes/100%20citas%20juntos.jpg"},{"titulo":"100 citas con mi mejor amiga","autor":"-","categoria":"otros","precio":32000,"imagen":""},{"titulo":"40 dias de viaje en silencio","autor":"-","categoria":"desarrollo","precio":32000,"imagen":""},{"titulo":"46 cartas estoicas","autor":"-","categoria":"desarrollo","precio":32000,"imagen":""},{"titulo":"Etereo","autor":"Joana Marcus","categoria":"romance","precio":29000,"imagen":"imagenes/Etereo%20TAPA%20DURA.jpg"},{"titulo":"Sempiterno","autor":"Joana Marcus","categoria":"romance","precio":29000,"imagen":"imagenes/Sempiterno.jpg"},{"titulo":"La actitud mental positiva","autor":"Napoleon Hill","categoria":"desarrollo","precio":28000,"imagen":"imagenes/La%20Actitud%20Mental%20Positiva.jpg"},{"titulo":"Saga Harry Potter (del 1 al 7)","autor":"J. K. Rowling","categoria":"fantasia","precio":140000,"imagen":"imagenes/Saga%20Harry%20Potter%20del%201%20al%207.jpg"},{"titulo":"Saga Percy Jackson (del 1 al 5)","autor":"Rick Riordan","categoria":"fantasia","precio":120000,"imagen":""},{"titulo":"Insaciable","autor":"Leigh Rivers","categoria":"romance","precio":29000,"imagen":"imagenes/Insaciable.jpg"},{"titulo":"Quien se ha llevado mi queso?","autor":"Spencer Johnson","categoria":"desarrollo","precio":19000,"imagen":"imagenes/Quien%20se%20ha%20llevado%20mi%20queso.jpg"},{"titulo":"Sobrenatural","autor":"Joe Dispensa","categoria":"desarrollo","precio":19000,"imagen":"imagenes/Sobrenatural.jpg"},{"titulo":"Psicologia Maquiavelica","autor":"Giovanni Barone","categoria":"desarrollo","precio":44000,"imagen":"imagenes/Psicologia%20Maquiavelica.jpg"},{"titulo":"La ley de murphy para niños","autor":"Doris Walton","categoria":"infantiles","precio":25000,"imagen":"imagenes/La%20ley%20de%20murphy%20para%20ni%C3%B1os.jpg"},{"titulo":"Rayuela","autor":"Julio Cortazar","categoria":"clasicos","precio":27000,"imagen":"imagenes/Rayuela.jpg"},{"titulo":"Piense y Hagase rico","autor":"Napoleon Hill","categoria":"desarrollo","precio":19000,"imagen":"imagenes/Piense%20y%20Hagase%20rico.jpg"},{"titulo":"Todo lo que somos juntos","autor":"Alice Kellen","categoria":"romance","precio":24000,"imagen":"imagenes/Todo%20lo%20que%20somos%20juntos.jpg"},{"titulo":"De Dios para ti","autor":"Gia Moretti","categoria":"desarrollo","precio":29000,"imagen":"imagenes/De%20Dios%20para%20ti.jpg"},{"titulo":"Almendra","autor":"Won-Pyung Sohn","categoria":"otros","precio":29000,"imagen":"imagenes/Almendra.jpg"},{"titulo":"La inteligencia del corazon","autor":"Doc Childre","categoria":"desarrollo","precio":26000,"imagen":"imagenes/La%20inteligencia%20del%20corazon.jpg"},{"titulo":"En llamas","autor":"Suzanne Collins","categoria":"fantasia","precio":29000,"imagen":"imagenes/En%20llamas.jpg"},{"titulo":"Amanecer en la cosecha","autor":"Suzanne Collins","categoria":"fantasia","precio":30000,"imagen":"imagenes/Amanecer%20en%20la%20cosecha.jpg"},{"titulo":"Sinsajo","autor":"Suzanne Collins","categoria":"fantasia","precio":30000,"imagen":"imagenes/Sinsajo.jpg"},{"titulo":"Verity","autor":"Colleen Hoover","categoria":"thriller","precio":27000,"imagen":"imagenes/Verity.jpg"},{"titulo":"La bailarina de Auschwitz","autor":"Edith Eger","categoria":"clasicos","precio":25000,"imagen":"imagenes/La%20bailarina%20de%20Auschwitz.jpg"},{"titulo":"Me elijo a mi","autor":"Arianna Portal","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Me%20elijo%20a%20mi%20TAPA%20DURA.jpg"},{"titulo":"Quiero que sepas","autor":"Ana Russo","categoria":"desarrollo","precio":23000,"imagen":"imagenes/Quiero%20que%20sepas.jpg"},{"titulo":"Los 7 maridos de Evelyn Hugo","autor":"Taylor Jenkins Reid","categoria":"romance","precio":27000,"imagen":"imagenes/Los%207%20maridos%20de%20Evelyn%20Hugo.jpg"},{"titulo":"El mito de sisifo","autor":"Albert Camus","categoria":"clasicos","precio":26000,"imagen":"imagenes/El%20mito%20de%20sisifo.jpg"},{"titulo":"Todo lo que nunca fuimos","autor":"Alice Kellen","categoria":"romance","precio":25000,"imagen":"imagenes/Todo%20lo%20que%20nunca%20fuimos.jpg"},{"titulo":"Sigue mi voz","autor":"Ariana Godoy","categoria":"romance","precio":25000,"imagen":"imagenes/Sigue%20mi%20voz.jpg"},{"titulo":"Legendary","autor":"Stephanie Garber","categoria":"fantasia","precio":26000,"imagen":"imagenes/Legendary.jpg"},{"titulo":"Finale","autor":"Stephanie Garber","categoria":"fantasia","precio":26400,"imagen":"imagenes/Finale.jpg"},{"titulo":"Rey de la envidia","autor":"Ana Huang","categoria":"romance","precio":31000,"imagen":"imagenes/Rey%20de%20la%20envidia.jpg"},{"titulo":"Rey de la codicia","autor":"Ana Huang","categoria":"romance","precio":39000,"imagen":"imagenes/Rey%20de%20la%20codicia.jpg"},{"titulo":"Rey de la desidia","autor":"Ana Huang","categoria":"romance","precio":35000,"imagen":"imagenes/Rey%20de%20la%20desidia.jpg"},{"titulo":"Releasing 10 (tommen 6)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":""},{"titulo":"Taming 7 (tommen 5)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":"imagenes/Taming%207%20%28tommen%205%29.jpg"},{"titulo":"Redeeming 6 (tommen 4)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":"imagenes/Redeeming%206%20%28tommen%204%29.jpg"},{"titulo":"Saving 6 (tommen 3)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":"imagenes/Saving%206%20%28tommen%203%29.jpg"},{"titulo":"Keeping 13 (tommen 2)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":"imagenes/Keeping%2013%20%28tommen%202%29.jpg"},{"titulo":"Binding 13 (tommen 1)","autor":"Chloe Walsh","categoria":"romance","precio":32000,"imagen":"imagenes/Binding%2013%20%28tommen%201%29.jpg"},{"titulo":"Ofertas de","autor":"Alex Hormozi","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Ofertas%20de%20%24100M.jpg"},{"titulo":"La biblia del vendedor","autor":"Alex Dey","categoria":"desarrollo","precio":14000,"imagen":"imagenes/La%20biblia%20del%20vendedor.jpg"},{"titulo":"Prospectos","autor":"Alez Hormozi","categoria":"desarrollo","precio":21000,"imagen":""},{"titulo":"Carpe Diem","autor":"Montesinos Humberto","categoria":"desarrollo","precio":21000,"imagen":"imagenes/Carpe%20Diem%20TAPA%20DURA.jpg"},{"titulo":"Go Pro","autor":"Eric Worre","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Go%20Pro.jpg"},{"titulo":"La muerte feliz","autor":"Albert Camus","categoria":"clasicos","precio":21000,"imagen":"imagenes/La%20muerte%20feliz.jpg"},{"titulo":"Mas que rivales","autor":"Rachel Reid","categoria":"romance","precio":30000,"imagen":"imagenes/Mas%20que%20rivales.jpg"},{"titulo":"Has llamado a Sam","autor":"Dustin Thao","categoria":"romance","precio":25000,"imagen":"imagenes/Has%20llamado%20a%20Sam.jpg"},{"titulo":"Burlar al diablo","autor":"Napoleon Hill","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Burlar%20al%20diablo.jpg"},{"titulo":"Romper el hielo","autor":"Hannah Grace","categoria":"romance","precio":28000,"imagen":"imagenes/Romper%20el%20hielo.jpg"},{"titulo":"El dia que dejo de nevar en Alaska (tapa 2)","autor":"Alice Kellen","categoria":"romance","precio":30000,"imagen":"imagenes/El%20dia%20que%20dejo%20de%20nevar%20en%20Alaska%20%28tapa%202%29.jpg"},{"titulo":"Alas de estrella","autor":"Allison Saft","categoria":"infantiles","precio":28000,"imagen":"imagenes/Alas%20de%20estrella.jpg"},{"titulo":"El club del olvido","autor":"Alice Kellen","categoria":"romance","precio":27000,"imagen":"imagenes/El%20club%20del%20olvido.jpg"},{"titulo":"Aprendiendo a vivir con el duelo","autor":"Mind Shift Publiching","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Aprendiendo%20a%20vivir%20con%20el%20duelo.jpg"},{"titulo":"Caminando a traves del duelo","autor":"Lola Franz","categoria":"desarrollo","precio":23000,"imagen":"imagenes/Caminando%20a%20traves%20del%20duelo.jpg"},{"titulo":"La ladrona de libros","autor":"Markus Zusak","categoria":"clasicos","precio":29000,"imagen":"imagenes/La%20ladrona%20de%20libros.jpg"},{"titulo":"Vamos a calentar el sol Jose","autor":"Mauro de Vasconcelos","categoria":"clasicos","precio":25000,"imagen":"imagenes/Vamos%20a%20calentar%20el%20sol.jpg"},{"titulo":"Mi planta de naranja lima Jose","autor":"Mauro de Vasconcelos","categoria":"clasicos","precio":21000,"imagen":"imagenes/Mi%20planta%20de%20naranja%20lima.jpg"},{"titulo":"Cazzu - Perreo","autor":"Cazzu","categoria":"otros","precio":24000,"imagen":"imagenes/Cazzu%20-%20Perreo.jpg"},{"titulo":"No me puedes lastimar","autor":"David Goggins","categoria":"desarrollo","precio":22000,"imagen":"imagenes/No%20me%20puedes%20lastimar.jpg"},{"titulo":"Rota se camina igual","autor":"Lorena Pronsky","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Rota%20se%20camina%20igual.jpg"},{"titulo":"el mapa de los anhelos","autor":"Alice Kellen","categoria":"romance","precio":28000,"imagen":"imagenes/el%20mapa%20de%20los%20anhelos.jpg"},{"titulo":"La peste","autor":"Albert Camus","categoria":"clasicos","precio":20000,"imagen":"imagenes/La%20peste.jpg"},{"titulo":"Amor Fati","autor":"Casimiro Ruiz","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Amor%20Fati%20TAPA%20DURA.jpg"},{"titulo":"Psicologia oscura","autor":"Steven Turner","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Psicologia%20oscura.jpg"},{"titulo":"El diario de la soledad","autor":"Dante Montelli","categoria":"desarrollo","precio":21000,"imagen":"imagenes/El%20diario%20de%20la%20soledad%20TAPA%20DURA.jpg"},{"titulo":"De anatomia poetica","autor":"Gilraen Earfalas","categoria":"desarrollo","precio":30000,"imagen":"imagenes/De%20anatomia%20poetica.jpg"},{"titulo":"Amiga date cuenta y limpia tu mierda","autor":"Katherine Hoyer","categoria":"desarrollo","precio":22000,"imagen":"imagenes/Amiga%20date%20cuenta%20y%20limpia%20tu%20mierda.jpg"},{"titulo":"Desfibrilador","autor":"Gilraen Earfalas","categoria":"desarrollo","precio":26000,"imagen":"imagenes/Desfibrilador.jpg"},{"titulo":"El chico que dibujaba constelaciones","autor":"Alice Kellen","categoria":"romance","precio":25000,"imagen":"imagenes/El%20chico%20que%20dibujaba%20constelaciones.jpg"},{"titulo":"De mi para mi la tormenta pasara","autor":"Chriss Braund","categoria":"desarrollo","precio":22000,"imagen":"imagenes/De%20mi%20para%20mi%20la%20tormenta%20pasara.jpg"},{"titulo":"Si lo crees lo creas","autor":"Brian Tracy","categoria":"desarrollo","precio":21000,"imagen":"imagenes/Si%20lo%20crees%20lo%20creas.jpg"},{"titulo":"el camino del artista","autor":"Julia Cameron","categoria":"desarrollo","precio":27000,"imagen":"imagenes/el%20camino%20del%20artista.jpg"},{"titulo":"Deja de ser tu","autor":"Joe Dispenza","categoria":"desarrollo","precio":15000,"imagen":"imagenes/Deja%20de%20ser%20tu.jpg"},{"titulo":"Muchas vidas muchos maestros","autor":"Brian Weiss","categoria":"desarrollo","precio":20000,"imagen":"imagenes/Muchas%20vidas%20muchos%20maestros.jpg"},{"titulo":"La paciente silenciosa","autor":"Alex Michaelides","categoria":"thriller","precio":35000,"imagen":"imagenes/La%20paciente%20silenciosa.jpg"},{"titulo":"Mi nombre es emilia del valle","autor":"Isabel Allende","categoria":"clasicos","precio":27000,"imagen":"imagenes/Mi%20nombre%20es%20emilia%20del%20valle.jpg"},{"titulo":"La biblioteca de la medianoche","autor":"Matt Haig","categoria":"fantasia","precio":22000,"imagen":"imagenes/La%20biblioteca%20de%20la%20medianoche.jpg"},{"titulo":"100 años de soledad","autor":"Gabriel Garcia Marquez","categoria":"clasicos","precio":25000,"imagen":"imagenes/100%20a%C3%B1os%20de%20soledad.jpg"},{"titulo":"Cadaver Exquisito","autor":"Agustina Bazterrica","categoria":"fantasia","precio":20000,"imagen":"imagenes/Cadaver%20Exquisito.jpg"},{"titulo":"El duelo","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/El%20duelo.jpg"},{"titulo":"La felicidad","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/La%20felicidad.jpg"},{"titulo":"La voz ausente","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/La%20voz%20ausente.jpg"},{"titulo":"Palabras cruzadas","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Palabras%20cruzadas.jpg"},{"titulo":"Cara a cara","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Cara%20a%20cara.jpg"},{"titulo":"Historias inconscientes","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Historias%20inconscientes.jpg"},{"titulo":"Historias de divan","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Historias%20de%20divan.jpg"},{"titulo":"El precio de la pasion","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/El%20precio%20de%20la%20pasion.jpg"},{"titulo":"La respuesta esta en ti","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/La%20respuesta%20esta%20en%20ti.jpg"},{"titulo":"Encuentros","autor":"Gabriel Rolon","categoria":"desarrollo","precio":24000,"imagen":"imagenes/Encuentros.jpg"},{"titulo":"50 capsulas de amor propio","autor":"Sara Espejo","categoria":"desarrollo","precio":30000,"imagen":"imagenes/50%20capsulas%20de%20amor%20propio.jpg"},{"titulo":"Ansiosamente","autor":"Sara Espejo","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Ansiosamente.jpg"},{"titulo":"Este dolor no es mio","autor":"Mark Wolynn","categoria":"desarrollo","precio":28000,"imagen":"imagenes/Este%20dolor%20no%20es%20mio.jpg"},{"titulo":"Terapia para llevar","autor":"Ana Perez","categoria":"desarrollo","precio":29000,"imagen":"imagenes/Terapia%20para%20llevar.jpg"},{"titulo":"Encuentra a tu persona vitamina","autor":"Marian Rojas Estapé","categoria":"desarrollo","precio":23000,"imagen":"imagenes/Encuentra%20a%20tu%20persona%20vitamina.jpg"},{"titulo":"Donde habitan las sirenas","autor":"Maria Martinez","categoria":"romance","precio":28000,"imagen":"imagenes/Donde%20habitan%20las%20sirenas.jpg"},{"titulo":"Se busca novio","autor":"Alexis Hall","categoria":"romance","precio":28000,"imagen":"imagenes/Se%20busca%20novio.jpg"},{"titulo":"A oscuras","autor":"Navessa Allen","categoria":"romance","precio":30000,"imagen":"imagenes/A%20oscuras.jpg"},{"titulo":"A dos metros de ti","autor":"Rachael Lippincott","categoria":"romance","precio":20000,"imagen":"imagenes/A%20dos%20metros%20de%20ti%20.jpg"},{"titulo":"Boulevard (boulevard, despues de el, antes de ella, eterno)","autor":"Flor M Salvador","categoria":"romance","precio":70000,"imagen":""},{"titulo":"Villanos de Disney (12 libros en total)","autor":"Serena Valentino","categoria":"infantiles","precio":170000,"imagen":"imagenes/Villanos%20de%20Disney%20%2812%20libros%20en%20total%29.jpg"},{"titulo":"Kiss Me (5 libros en total)","autor":"Elle Kennedy","categoria":"romance","precio":136000,"imagen":"imagenes/Kiss%20Me%20%285%20libros%20en%20total%29.jpg"},{"titulo":"Sigue lloviendo","autor":"Allice Kellen","categoria":"romance","precio":25000,"imagen":"imagenes/Sigue%20lloviendo.jpg"},{"titulo":"La tregua","autor":"Mario Benedetti","categoria":"clasicos","precio":28000,"imagen":"imagenes/La%20tregua.jpg"},{"titulo":"Tu exito es inevitable","autor":"Maite Issa","categoria":"desarrollo","precio":23000,"imagen":"imagenes/Tu%20exito%20es%20inevitable.jpg"},{"titulo":"El hombre mas rico de babilonia","autor":"George S Clason","categoria":"desarrollo","precio":15000,"imagen":"imagenes/El%20hombre%20mas%20rico%20de%20babilonia.jpg"},{"titulo":"Lazos de amor","autor":"Brian Weiss","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Lazos%20de%20amor.jpg"},{"titulo":"El perro guardian de las estrellas","autor":"Hoshi Mamoru Inu","categoria":"fantasia","precio":25000,"imagen":"imagenes/El%20perro%20guardian%20de%20las%20estrellas.jpg"},{"titulo":"El perro guardian de las estrellas (continuacion)","autor":"Hoshi Mamoru Inu","categoria":"fantasia","precio":25000,"imagen":"imagenes/El%20perro%20guardian%20de%20las%20estrellas%20%28continuacion%29.jpg"},{"titulo":"La vegetariana","autor":"Han Kang","categoria":"fantasia","precio":28000,"imagen":"imagenes/La%20vegetariana.jpg"},{"titulo":"vendes o vendes","autor":"Grant Cardone","categoria":"desarrollo","precio":15000,"imagen":"imagenes/vendes%20o%20vendes.jpg"},{"titulo":"Si no eres el primero eres el ultimo","autor":"Grant Cardone","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Si%20no%20eres%20el%20primero%20eres%20el%20ultimo.jpg"},{"titulo":"Antes de Diciembre","autor":"Joana Marcus","categoria":"romance","precio":29000,"imagen":"imagenes/Antes%20de%20Diciembre.jpg"},{"titulo":"Twisted Love","autor":"Ana Huang","categoria":"romance","precio":25000,"imagen":"imagenes/Twisted%20Love.jpg"},{"titulo":"Twisted Hate","autor":"Ana Huang","categoria":"romance","precio":28000,"imagen":"imagenes/Twisted%20Hate.jpg"},{"titulo":"Twisted Lies","autor":"Ana Huang","categoria":"romance","precio":25000,"imagen":"imagenes/Twisted%20Lies.jpg"},{"titulo":"Culpa mia","autor":"Mercedes Ron","categoria":"romance","precio":28000,"imagen":"imagenes/Culpa%20mia.jpg"},{"titulo":"Culpa Tuya","autor":"Mercedes Ron","categoria":"romance","precio":28000,"imagen":"imagenes/Culpa%20Tuya.jpg"},{"titulo":"Culpa Nuestra","autor":"Mercedes Ron","categoria":"romance","precio":28000,"imagen":"imagenes/Culpa%20Nuestra.jpg"},{"titulo":"Culpa Vuestra","autor":"Mercedes Ron","categoria":"romance","precio":33000,"imagen":"imagenes/Culpa%20Vuestra.jpg"},{"titulo":"Despues de Diciembre","autor":"Joana Marcus","categoria":"romance","precio":26000,"imagen":"imagenes/Despues%20de%20Diciembre.jpg"},{"titulo":"Las Luces de febrero","autor":"Joana Marcus","categoria":"romance","precio":28000,"imagen":"imagenes/Luces%20de%20febrero.jpg"},{"titulo":"Tres meses","autor":"Joana Marcus","categoria":"romance","precio":28000,"imagen":"imagenes/Tres%20meses.jpg"},{"titulo":"La teoria del amor","autor":"Ali Hazelwood","categoria":"romance","precio":29000,"imagen":"imagenes/La%20teoria%20del%20amor.jpg"},{"titulo":"nuestro lugar en el mundo","autor":"Inma Rubiales","categoria":"romance","precio":27000,"imagen":"imagenes/nuestro%20lugar%20en%20el%20mundo.jpg"},{"titulo":"Alas de hierro","autor":"Rebecca Yarros","categoria":"fantasia","precio":36000,"imagen":"imagenes/Alas%20de%20hierro.jpg"},{"titulo":"Alas de sangre","autor":"Rebecca Yarros","categoria":"fantasia","precio":35000,"imagen":"imagenes/Alas%20de%20sangre.jpg"},{"titulo":"el arte de ser nosotros","autor":"Inma Rubiales","categoria":"romance","precio":30000,"imagen":"imagenes/el%20arte%20de%20ser%20nosotros.jpg"},{"titulo":"Fabricante de lagrimas","autor":"Erin Doom","categoria":"romance","precio":29000,"imagen":"imagenes/Fabricante%20de%20lagrimas.jpg"},{"titulo":"Saga Crepusculo (4 libros tapa dura)","autor":"Stephenie Meyer","categoria":"fantasia","precio":182000,"imagen":"imagenes/Saga%20Crepusculo%20%284%20libros%20tapa%20dura%29.jpg"},{"titulo":"Saga Narnia (7 libros tapa dura)","autor":"C S Lewis","categoria":"fantasia","precio":175000,"imagen":""},{"titulo":"Saga Gravity Falls (3 libros)","autor":"-","categoria":"infantiles","precio":40000,"imagen":"imagenes/Saga%20Gravity%20Falls%20%283%20libros%29.jpg"},{"titulo":"Saga Tal vez (3 libros)","autor":"Collen Hoover","categoria":"romance","precio":65000,"imagen":"imagenes/Saga%20Tal%20vez%20%283%20libros%29.jpg"},{"titulo":"Saga Inquebrantable - Indomita (2 libros tapa dura)","autor":"Raisa Martin Espinoza","categoria":"desarrollo","precio":70000,"imagen":"imagenes/Saga%20Inquebrantable%20-%20Indomita%20%282%20libros%20tapa%20dura%29.jpg"},{"titulo":"Saga Isabella Miller (5 libros tapa dura)","autor":"Isabella Miller","categoria":"infantiles","precio":90000,"imagen":""},{"titulo":"Saga Marian Rojas Estapé (3 libros tapa dura)","autor":"Marian Rojas Estapé","categoria":"desarrollo","precio":66000,"imagen":"imagenes/Saga%20Marian%20Rojas%20Estap%C3%A9%20%283%20libros%20tapa%20dura%29.jpg"},{"titulo":"Saga el principe cruel (3 libros)","autor":"Holly Black","categoria":"fantasia","precio":69000,"imagen":"imagenes/Saga%20el%20principe%20cruel%20%283%20libros%29.jpg"},{"titulo":"Saga la asistenta (3 libros)","autor":"Freida McFadden","categoria":"thriller","precio":70000,"imagen":"imagenes/Saga%20la%20asistenta%20%283%20libros%29.jpg"},{"titulo":"Saga meses a tu lado (4 libros)","autor":"Joana Marcus","categoria":"romance","precio":95000,"imagen":"imagenes/Saga%20meses%20a%20tu%20lado%20%284%20libros%29.jpg"},{"titulo":"Saga culpables (4 libros)","autor":"Mercedes Ron","categoria":"romance","precio":90000,"imagen":"imagenes/Saga%20culpables%20%284%20libros%29.jpg"},{"titulo":"Saga reyes de los pecados (5 libros)","autor":"Ana Huang","categoria":"romance","precio":90000,"imagen":"imagenes/Saga%20reyes%20de%20los%20pecados%20%285%20libros%29.jpg"},{"titulo":"Saga asesinato para principiantes (3 libros)","autor":"Holly Jackson","categoria":"thriller","precio":70000,"imagen":"imagenes/Saga%20asesinato%20para%20principiantes%20%283%20libros%29.jpg"},{"titulo":"como mandar a la mierda de forma educada","autor":"Alba Cardalda","categoria":"desarrollo","precio":17000,"imagen":"imagenes/como%20mandar%20a%20la%20mierda%20de%20forma%20educada.jpg"},{"titulo":"de mi para mi puedo con esto y mas","autor":"Chris Braund","categoria":"desarrollo","precio":26000,"imagen":""},{"titulo":"Como ganar amigos e influir sobre las personas","autor":"Dale Carnegie","categoria":"desarrollo","precio":24000,"imagen":""},{"titulo":"El poder del ahora","autor":"Eckhart Tolle","categoria":"desarrollo","precio":24000,"imagen":""},{"titulo":"la soledad","autor":"Gabriel Rolon","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"Habitos atomicos","autor":"James Clear","categoria":"desarrollo","precio":27000,"imagen":"imagenes/Habitos%20atomicos%20en%20accion.jpg"},{"titulo":"el poder de tu mente subconsciente","autor":"Joseph Murphy","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"No te creas todo lo que píensas","autor":"Joseph Nguyen","categoria":"desarrollo","precio":27000,"imagen":""},{"titulo":"Deshacer la ansiedad","autor":"Judson Brewer","categoria":"desarrollo","precio":26000,"imagen":""},{"titulo":"el sutil arte de que todo te importe un carajo","autor":"Mark Manson","categoria":"desarrollo","precio":19000,"imagen":"imagenes/el%20sutil%20arte%20de%20que%20todo%20te%20importe%20un%20carajo.jpg"},{"titulo":"Los 4 acuerdos","autor":"Miguel Ruiz","categoria":"desarrollo","precio":19000,"imagen":"imagenes/Los%204%20acuerdos.jpg"},{"titulo":"mas vivo que el diablo","autor":"Napoleon Hill","categoria":"desarrollo","precio":21800,"imagen":"imagenes/mas%20vivo%20que%20el%20diablo.jpg"},{"titulo":"el monje que vendio su ferrari","autor":"Robin Sharma","categoria":"desarrollo","precio":21000,"imagen":"imagenes/el%20monje%20que%20vendio%20su%20ferrari.jpg"},{"titulo":"Tus zonas erroneas","autor":"Wayne W Dier","categoria":"desarrollo","precio":23000,"imagen":"imagenes/Tus%20zonas%20erroneas.jpg"},{"titulo":"la maldicion del amor verdadero","autor":"stephanie garber","categoria":"romance","precio":25000,"imagen":""},{"titulo":"un lugar soleado para gente sombria","autor":"Mariana Enriquez","categoria":"thriller","precio":25000,"imagen":"imagenes/un%20lugar%20soleado%20para%20gente%20sombria.jpg"},{"titulo":"Los peligros de fumar en la cama","autor":"Mariana Enriquez","categoria":"thriller","precio":25000,"imagen":"imagenes/Los%20peligros%20de%20fumar%20en%20la%20cama.jpg"},{"titulo":"renegados","autor":"marissa meyer","categoria":"fantasia","precio":29000,"imagen":"imagenes/renegados.jpg"},{"titulo":"Quedará el amor","autor":"Alice Kellen","categoria":"romance","precio":27000,"imagen":"imagenes/Quedar%C3%A1%20el%20amor.jpg"},{"titulo":"Dimelo Bajito","autor":"Mercedes Ron","categoria":"romance","precio":22800,"imagen":"imagenes/Dimelo%20Bajito.jpg"},{"titulo":"Te espero en el fin del mundo","autor":"Andrea Longarela","categoria":"romance","precio":25000,"imagen":"imagenes/Te%20espero%20en%20el%20fin%20del%20mundo.jpg"},{"titulo":"It","autor":"Stephen King","categoria":"thriller","precio":27000,"imagen":"imagenes/It.jpg"},{"titulo":"Ciudades de cenizas","autor":"Joana Marcus","categoria":"fantasia","precio":27000,"imagen":"imagenes/Ciudades%20de%20cenizas.jpg"},{"titulo":"Ciudades de humo","autor":"Joana Marcus","categoria":"fantasia","precio":27000,"imagen":"imagenes/Ciudades%20de%20humo.jpg"},{"titulo":"Ciudades de fuego","autor":"Joana Marcus","categoria":"fantasia","precio":27000,"imagen":"imagenes/Ciudades%20de%20fuego.jpg"},{"titulo":"Alas de Onix","autor":"Rebecca Yarros","categoria":"fantasia","precio":40000,"imagen":"imagenes/Alas%20de%20Onix.jpg"},{"titulo":"Todas las historias llevan tu nombre","autor":"Andrea Longarela","categoria":"romance","precio":30000,"imagen":"imagenes/Todas%20las%20historias%20llevan%20tu%20nombre.jpg"},{"titulo":"Powerless","autor":"Lauren Roberts","categoria":"fantasia","precio":30000,"imagen":"imagenes/Powerless.jpg"},{"titulo":"Donde viven las musas - Edicion Especial","autor":"Marianela Dos Santos","categoria":"romance","precio":35000,"imagen":"imagenes/Donde%20viven%20las%20musas%20-%20Edicion%20Especial.jpg"},{"titulo":"En todos mis universos - Edicion Especial","autor":"Marianela Dos Santos","categoria":"romance","precio":35000,"imagen":"imagenes/En%20todos%20mis%20universos%20-%20Edicion%20Especial.jpg"},{"titulo":"La quimica del amor","autor":"Ali Hazelwood","categoria":"romance","precio":29000,"imagen":"imagenes/La%20quimica%20del%20amor.jpg"},{"titulo":"La hipotesis del amor","autor":"Ali Hazelwood","categoria":"romance","precio":30000,"imagen":"imagenes/La%20hipotesis%20del%20amor.jpg"},{"titulo":"Una corte de niebla y furia","autor":"Sarah J. Maas","categoria":"fantasia","precio":30000,"imagen":"imagenes/Una%20corte%20de%20niebla%20y%20furia.jpg"},{"titulo":"Una corte de alas y ruina","autor":"Sarah J. Maas","categoria":"fantasia","precio":30000,"imagen":"imagenes/Una%20corte%20de%20alas%20y%20ruina.jpg"},{"titulo":"Una corte de rosas y espinas","autor":"Sarah J. Maas","categoria":"fantasia","precio":30000,"imagen":"imagenes/Una%20corte%20de%20rosas%20y%20espinas.jpg"},{"titulo":"Caraval","autor":"Stephanie Garber","categoria":"fantasia","precio":27000,"imagen":"imagenes/Caraval.jpg"},{"titulo":"Boss","autor":"Eva Muñoz","categoria":"romance","precio":36000,"imagen":"imagenes/Boss.jpg"},{"titulo":"Un amigo gratis","autor":"Inma Rubiales","categoria":"romance","precio":33000,"imagen":"imagenes/Un%20amigo%20gratis.jpg"},{"titulo":"Hasta que nos quedemos sin estrellas","autor":"Inma Rubiales","categoria":"romance","precio":25000,"imagen":"imagenes/Hasta%20que%20nos%20quedemos%20sin%20estrellas.jpg"},{"titulo":"Cuando no queden mas estrellas que contar","autor":"Maria Martinez","categoria":"romance","precio":26000,"imagen":"imagenes/Cuando%20no%20queden%20mas%20estrellas%20que%20contar.jpg"},{"titulo":"La magia de las casualidades imposibles","autor":"Maria Martinez","categoria":"romance","precio":25000,"imagen":"imagenes/La%20magia%20de%20las%20casualidades%20imposibles.jpg"},{"titulo":"Lujuria","autor":"Eva Muñoz","categoria":"romance","precio":63000,"imagen":"imagenes/Lujuria.jpg"},{"titulo":"La teoria de kim (tomo 1)","autor":"Jay Sandoval","categoria":"fantasia","precio":35000,"imagen":""},{"titulo":"La teoria de kim (tomo 2)","autor":"Jay Sandoval","categoria":"fantasia","precio":35000,"imagen":""},{"titulo":"Esnob","autor":"Elisabet Benavent","categoria":"romance","precio":35000,"imagen":"imagenes/Esnob.jpg"},{"titulo":"Saga Juego de tronos - Cancion de hielo y fuego (5 libros tapa dura en box set)","autor":"George R.R. Martin","categoria":"fantasia","precio":190000,"imagen":""},{"titulo":"Saga el señor de los anillos - tapa dura en box set","autor":"J R R Tolkien","categoria":"fantasia","precio":190000,"imagen":""},{"titulo":"El dia de la trilla","autor":"Rebecca Yarros","categoria":"fantasia","precio":30000,"imagen":"imagenes/El%20dia%20de%20la%20trilla.jpg"},{"titulo":"Michael 2026 - tapa dura con cantos dorados","autor":"Jaafar Jackson","categoria":"otros","precio":30000,"imagen":""},{"titulo":"El dia de la trilla - tapa dura con cantos plateados","autor":"Rebecca Yarros","categoria":"fantasia","precio":37000,"imagen":"imagenes/El%20dia%20de%20la%20trilla%20-%20tapa%20dura%20con%20cantos%20plateados.jpg"},{"titulo":"Alchemised","autor":"Sen Lin Yu","categoria":"fantasia","precio":50000,"imagen":"imagenes/Alchemised.jpg"},{"titulo":"Murdoku y murdoku viaje al pasado - tapa dura","autor":"Manuel Garand","categoria":"otros","precio":65000,"imagen":"imagenes/Murdoku%20y%20murdoku%20viaje%20al%20pasado-tapa%20dura%20.jpg"},{"titulo":"Mentalidad Mamba","autor":"Kobe Bryant","categoria":"desarrollo","precio":30000,"imagen":"imagenes/Mentalidad%20Mamba.jpg"},{"titulo":"Si fueramos eternos","autor":"Emma Gil","categoria":"romance","precio":16000,"imagen":""},{"titulo":"Violeta","autor":"Isabel Allende","categoria":"clasicos","precio":27000,"imagen":""},{"titulo":"el libro de azrael","autor":"Amber V Nicole","categoria":"fantasia","precio":40000,"imagen":""},{"titulo":"te receto otro gato","autor":"Syou Ishida","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"hundida","autor":"Collen Hoover","categoria":"thriller","precio":27000,"imagen":""},{"titulo":"el libro negro de la persuasion","autor":"Alejandro Llantada","categoria":"desarrollo","precio":21000,"imagen":""},{"titulo":"Dopamina","autor":"Michael E Long","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"heartless","autor":"marissa meyer","categoria":"fantasia","precio":29000,"imagen":""},{"titulo":"Saga de sangre y cenizas (de sangre y cenizas y un reino de carne y fuego)","autor":"Jennifer L Armentrout","categoria":"fantasia","precio":50000,"imagen":""},{"titulo":"trono de monstruos","autor":"Amber V Nicole","categoria":"fantasia","precio":30000,"imagen":""},{"titulo":"hamlet","autor":"William Shakespeare","categoria":"clasicos","precio":22000,"imagen":""},{"titulo":"suspiros robados","autor":"ann rodd","categoria":"fantasia","precio":25000,"imagen":""},{"titulo":"Saga la hipotesis del amor","autor":"Ali Hazelwood","categoria":"romance","precio":55000,"imagen":"imagenes/La%20hipotesis%20del%20amor.jpg"},{"titulo":"Saga acotar (una corte de niebla y furia+ una corte de alas y ruina)","autor":"Sarah J. Maas","categoria":"fantasia","precio":50000,"imagen":""},{"titulo":"saga gatos guerreros","autor":"Eran Hunter","categoria":"infantiles","precio":110000,"imagen":""},{"titulo":"Saga caraval (box set 4 libros tapa dura)","autor":"Stephanie Garber","categoria":"fantasia","precio":110000,"imagen":""},{"titulo":"Saga a oscuras (3 libros)","autor":"Navessa Allen","categoria":"romance","precio":70000,"imagen":""},{"titulo":"Saga asesino de brujas (3 libros tapa dura)","autor":"Shelby Mahurin","categoria":"fantasia","precio":100000,"imagen":""},{"titulo":"Saga el perfume del rey (2 libros)","autor":"Karine Bernal Lobo","categoria":"fantasia","precio":51000,"imagen":""},{"titulo":"el cuadrante del flujo del dinero","autor":"Robert T Kiyosaki","categoria":"desarrollo","precio":19000,"imagen":""},{"titulo":"por que los ricos se vuelven mas ricos","autor":"Robert T Kiyosaki","categoria":"desarrollo","precio":23000,"imagen":""},{"titulo":"toma el control de tu vida","autor":"brian tracy","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"el poder de confiar en ti mismo","autor":"brian tracy","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"las leyes del exito","autor":"napoleon hill","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"controle su destino","autor":"tony robbins","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"dinero: domina el juego","autor":"tony robbins","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"el niño pisaflores TAPA DURA","autor":"pablo r coca","categoria":"infantiles","precio":22000,"imagen":""},{"titulo":"Dentro del juego del calamar","autor":"park minjoon","categoria":"otros","precio":17000,"imagen":"imagenes/Dentro%20del%20juego%20del%20calamar.jpg"},{"titulo":"mi princesa valiente","autor":"edicion","categoria":"infantiles","precio":29000,"imagen":""},{"titulo":"el libro de bill","autor":"gravity falls","categoria":"infantiles","precio":24000,"imagen":""},{"titulo":"yolo aventuras","autor":"yolo","categoria":"infantiles","precio":65000,"imagen":""},{"titulo":"la ley de murphy para los dias que se te hacen bola","autor":"arthur bloch","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"la taza de la mañana","autor":"camille J Sage","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"la ley de murphy","autor":"arthur bloch","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"adolescente mutante","autor":"pablo pablovsky","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"portal 11:11","autor":"florence scovel shinn","categoria":"desarrollo","precio":31000,"imagen":""},{"titulo":"el acto de crear: una manera de ser","autor":"rick rubin","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"antes de que sea tarde","autor":"fran garcia","categoria":"romance","precio":30000,"imagen":""},{"titulo":"el libro negro de la nueva izquierda nicolas","autor":"marquez y agustin laje","categoria":"clasicos","precio":23000,"imagen":""},{"titulo":"querido yo: vamos a estar bien","autor":"alejandro sequera pinto","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"el espejo africano","autor":"liliana bodoc","categoria":"clasicos","precio":16000,"imagen":""},{"titulo":"rompe el hielo","autor":"tom big al schreiter","categoria":"desarrollo","precio":25000,"imagen":"imagenes/Romper%20el%20hielo.jpg"},{"titulo":"el arte de manipular","autor":"esteban rivas sanz","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"la inquilina","autor":"Freida McFadden","categoria":"thriller","precio":27000,"imagen":""},{"titulo":"mi lucha","autor":"adolf hitler","categoria":"clasicos","precio":25000,"imagen":""},{"titulo":"los hornos de hitler","autor":"olga lengyel","categoria":"clasicos","precio":27000,"imagen":""},{"titulo":"un regalo en el cafe de la luna llena","autor":"mai mochizuki","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"el jugador TAPA DURA","autor":"fiodor dostoievski","categoria":"clasicos","precio":26000,"imagen":""},{"titulo":"Basta de amores de mierda","autor":"el pela gonzalo romero","categoria":"desarrollo","precio":26000,"imagen":""},{"titulo":"la biblia de la psicologia oscura","autor":"halbert ward","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"trucos de psicologia oscura","autor":"steven torrent","categoria":"desarrollo","precio":25000,"imagen":""},{"titulo":"pre suacion","autor":"robert cialdini","categoria":"desarrollo","precio":28000,"imagen":""},{"titulo":"maestria","autor":"robert greene","categoria":"desarrollo","precio":33000,"imagen":""},{"titulo":"al final mueren los dos","autor":"adam silvera","categoria":"romance","precio":26000,"imagen":""},{"titulo":"lo que te escribi con el corazon roto","autor":"santiago alanis","categoria":"romance","precio":28000,"imagen":""},{"titulo":"corazon espinado","autor":"maria iglesias","categoria":"romance","precio":25000,"imagen":""},{"titulo":"beyond the story","autor":"myeongseok kang","categoria":"otros","precio":30000,"imagen":""},{"titulo":"cuando mama lastima","autor":"rayo guzman","categoria":"desarrollo","precio":18000,"imagen":""},{"titulo":"cuando papa lastima","autor":"rayo guzman","categoria":"desarrollo","precio":18000,"imagen":""},{"titulo":"la cancion de aquiles","autor":"madeline miller","categoria":"clasicos","precio":28000,"imagen":""},{"titulo":"ya no dependo de ti","autor":"miriam ruiz","categoria":"desarrollo","precio":29000,"imagen":""},{"titulo":"romper el circulo","autor":"Collen Hoover","categoria":"romance","precio":25000,"imagen":""},{"titulo":"deja de sobrevivir y empieza a vivir","autor":"julia arenas","categoria":"desarrollo","precio":30000,"imagen":""},{"titulo":"amor a cuatro estaciones","autor":"nacarid portal arraez","categoria":"romance","precio":28000,"imagen":""}];
+
+    const portadasPorTitulo = {
+        'Etereo': 'img-1.jpg',
+        'Etereo TAPA DURA': 'img-1.jpg',
+        'Sempiterno': 'img-2.jpg',
+        'Saga Harry Potter (del 1 al 7)': 'img-3.jpg',
+        'Psicologia Maquiavelica': 'img-5.jpg',
+        'Piense y Hagase rico': 'img-6.jpg',
+        'De Dios para ti': 'img-7.jpg',
+        'Sigue mi voz': 'img-9.jpg',
+        'Rey de la envidia': 'c.jpg',
+        'Saga Percy Jackson (del 1 al 5)': '5.jpg',
+        'Almendra': 'Almendra, de Won-Pyung Sohn.jpg',
+        'Amanecer en la cosecha': 'Amanecer en la cosecha.jpg',
+        'Insaciable': 'Amazon_com_ Insatiable (The Edge of Darkness_ Book 1) (The Edge of Darkness Trilogy) eBook _ Rivers, Leigh_ Kindle Store.jpg',
+        'El mito de sisifo': 'Amazon_com_ The Myth of Sisyphus (Vintage International)_ 9780525564454_ Camus, Albert_ Books.jpg',
+        'Rayuela': 'Julio Cortázar _ Rayuela (1963).jpg',
+        'La actitud mental positiva': 'La Actitud Mental Positiva _ Success Through a Positive Mental Attitude, Taschenbuch von Napoleon Hill, Penguin Random House Espagnol, 9786073106375.jpg',
+        'La bailarina de Auschwitz': 'La bailarina de Auschwitz (Epub en el drive).jpg',
+        'Legendary': 'Legendary _ Indigo Chapters.jpg',
+        'En llamas': 'Los Juegos Del Hambre - En Llamas Libro 2 - Suzanne Collins.jpg',
+        'Sinsajo': 'Los Juegos Del Hambre - Sinsajo Libro 3 - Suzanne Collins.jpg',
+        'Los 7 maridos de Evelyn Hugo': 'PUCK Libro Siete Maridos De Evelyn Hugo - Taylor Jenkins Reid â_¡ð___ð___ð__¯ð__²ð__¿ _ Falabella Chile.jpg',
+        'Quien se ha llevado mi queso?': 'Quien se ha llevado mi queso - Spencer Johnson.jpg',
+        'Quiero que sepas': 'Quiero Que Sepas (Spanish Edition).jpg',
+        'Rey de la codicia': 'Rey de la codicia [Ana Huang].jpg',
+        'Rey de la desidia': 'Rey de la desidia [Ana Huang].jpg',
+        'Sobrenatural': 'Sobrenatural.jpg',
+        'La ley de murphy para niños': 'TIKBOOKS Murphys Law Life Principles A Comprehensive Guide Tobenefit a Lifetime, for Children.jpg',
+        'Todo lo que nunca fuimos': 'Todo lo que nunca fuimos - Alice Kellen (DESEMBRE).jpg',
+        'Todo lo que somos juntos': 'Todo lo que somos juntos - Alice Kellen (DESEMBRE).jpg',
+        'La inteligencia del corazon': 'La inteligencia del corazón.jpg',
+        'Releasing 10 (tommen 6)': 'Releasing 10-tommen 6-Chloe Walsh.jpg',
+        'Saga Percy Jackson (del 1 al 5)': 'Saga Percy Jackson.jpg',
+        'Saga Percy Jackson (3 libros)': 'Saga Percy Jackson.jpg',
+        'Las Luces de febrero': 'Luces de febrero.jpg',
+        'generacion idiota': 'generacion idiota agustin laje.jpg',
+        'mente millonaria': 'Los secretos de la mente millonaria.jpg',
+        'el folleto del millonario': 'Folleto del millonario.jpg',
+        'Memento Mori': 'Memento Mori TAPA DURA.jpg',
+        'Siempre seras especial': 'Siempre seras un chico especial TAPA DURA.jpg'
+    };
+    const portadasDetectadas = {
+        "Somnis": "Somnis.jpg",
+        "TDAH TAPA DURA": "TDAH.jpg",
+        "Tomate un respiro TAPA DURA": "tomate un respiro.jpg",
+        "reino zafiro": "reino zafiro.jpg",
+        "Saga Ragnarok (2 libros tapa dura)": "saga ragnarok.jpg",
+        "Saga Percy Jackson (3 libros)": "saga percy jackson 3 libros.jpg",
+        "Poesia completa": "Poesia completa.jpg",
+        "el desafio del amor": "el desafio del amor.jpg",
+        "el diario de ana frank": "el diario de ana frank.jpg",
+        "Traguese ese sapo": "Traguese ese sapo.jpg",
+        "La vaca": "La vaca.jpg",
+        "Ella y el": "Ella y el.jpg",
+        "La teoria de la relatividad": "La teoria de la relatividad.jpg",
+        "Como suprimir las preocupaciones y disfrutar de la vida": "Como suprimir las preocupaciones y disfrutar de la vida.jpg",
+        "El arte de hablar en publico": "El arte de hablar en publico.jpg",
+        "El laberinto del dinotauro": "El laberinto del dinotauro dani y eva.jpg",
+        "El liderazgo": "Liderazgo.jpg",
+        "Disciplina sin lagrimas": "Disciplina sin lagrimas.jpg",
+        "Hablando sola": "Hablando sola.jpg",
+        "El camino del hombre superior": "El camino del hombre superior.jpg",
+        "El secreto de las siete semillas": "El secreto de las siete semillas.jpg",
+        "Nunca terminar": "Nunca terminar.jpg",
+        "Una breve historia de la adolescencia": "Una breve historia de la adolescencia.jpg",
+        "La magia de pensar en grande": "La magia de pensar en grande.jpg",
+        "Frozen 2": "Frozen 2.jpg",
+        "Iniciacion al liderazgo TAPA DURA": "iniciacion al liderazgo.jpg",
+        "Las venas abiertas de america latina": "Las venas abiertas de america latina.jpg",
+        "Tu no eres el problema": "Tu no eres el problema.jpg",
+        "el nuevo viaje del principito": "el nuevo viaje del principito.jpg",
+        "Redes": "Redes.jpg",
+        "Perderte para encontrarme": "Perderte para encontrarme.jpg",
+        "El viejo y el mar": "El viejo y el mar.jpg",
+        "El tunel": "El tunel.jpg",
+        "mi psicologa y yo": "mi psicologa y yo.jpg",
+        "Sobreviviendo con un corazon roto": "Sobreviviendo con un corazon roto.jpg",
+        "El poder del metabolismo": "El poder del metabolismo.jpg",
+        "El coronel no tiene quien le escriba": "El coronel no tiene quien le escriba.jpg",
+        "memorias de mis putas tristes": "memorias de mis putas tristes.jpg",
+        "del amor y otros demonios": "del amor y otros demonios.jpg",
+        "Relato de un naufrago": "Relato de un naufrago.jpg",
+        "los padecientes": "los padecientes.jpg",
+        "rebelion en la granja": "rebelion en la granja.jpg",
+        "mente millonaria": "Los secretos de la mente millonaria.jpg",
+        "Cuentos para un amigo con gripe": "Cuentos para un amigo con gripe.jpg",
+        "Cantame al dormir": "Cantame al dormir.jpg",
+        "eres el amor de mi otra vida": "eres el amor de mi otra vida.jpg",
+        "llamame cuando no te encuentres": "llamame cuando no te encuentres.jpg",
+        "basta de amores de mierda 2": "basta de amores de mierda 2.jpg",
+        "codigo bushido": "codigo bushido.jpg",
+        "trading en la zona": "trading en la zona.jpg",
+        "mentalidad de riqueza": "mentalidad de riqueza.jpg",
+        "El libro de la sabiduria": "El libro de la sabiduria.jpg",
+        "Ikigai": "Ikigai.jpg",
+        "Siddarta": "Siddarta.jpg",
+        "La tienda de los deseos": "La tienda de los deseos.jpg",
+        "La casa de los espiritus": "La casa de los espiritus.jpg",
+        "El zorro": "El zorro.jpg",
+        "la ciudad de las bestias": "la ciudad de las bestias.jpg",
+        "Amar tambien es dejar ir": "Amar tambien es dejar ir.jpg",
+        "Merezco mucho mas": "Merezco mucho mas.jpg",
+        "Vivir sin miedo": "Vivir sin miedo.jpg",
+        "Eres unica": "Eres unica.jpg",
+        "Eres unico": "Eres unico.jpg",
+        "Naciste para brillar": "Naciste para brillar.jpg",
+        "Spreen": "Spreen.jpg",
+        "No soy ansioso": "No soy ansioso.jpg",
+        "Tu eres tu prioridad": "Tu eres tu prioridad.jpg",
+        "Orgullo y prejuicio": "Orgullo y prejuicio.jpg",
+        "Si no te amas nadie te amarÃ¡": "Si no te amas nadie te amará.jpg",
+        "Bajo la misma estrella": "Bajo la misma estrella.jpg",
+        "El camino de las lagrimas": "El camino de las lagrimas.jpg",
+        "velero de cristal": "velero de cristal.jpg",
+        "una vida extraordinaria": "una vida extraordinaria.jpg",
+        "Pedro paramo": "Pedro paramo.jpg",
+        "Valentia": "Valentia.jpg",
+        "Valentia 2": "Valentia 2.jpg",
+        "Destroza este diario": "DESTROZA ESTE DIARIO.jpg",
+        "Destroza este diario stitch": "Destroza este diario stitch.jpg",
+        "Destroza reste horrocruz HARRY POTTER": "Destroza reste horrocruz HARRY POTTER.jpg",
+        "El diario de Greg 4": "El diario de Greg 4.jpg",
+        "El diario de Greg 7": "El diario de Greg 7.jpg",
+        "El diario de Greg 8": "El diario de Greg 8.jpg",
+        "El diario de Greg 9": "El diario de Greg 9.jpg",
+        "El diario de Greg 11": "El diario de Greg 11.jpg",
+        "El diario de Greg 16": "El diario de Greg 16.jpg",
+        "El diario de Greg 20": "El diario de Greg 20.jpg",
+        "Imaginaria": "Imaginaria.jpg",
+        "Ex novio": "Ex novio.jpg",
+        "Noctis": "Noctis.jpg",
+        "Doemi": "Doemi.jpg",
+        "Ex novio 2": "Ex novio 2.jpg",
+        "Dientes de madera": "Dientes de madera.jpg",
+        "Usted puede sanar su vida": "Usted puede sanar su vida.jpg",
+        "Gratitud": "Gratitud.jpg",
+        "Sana tu cuerpo": "Sana tu cuerpo.jpg",
+        "El hombre que calculaba": "El hombre que calculaba.jpg",
+        "Don quijote de la mancha": "Don quijote de la mancha.jpg",
+        "Aperturas de ajedrez": "Aperturas de ajedrez .jpg",
+        "Vuelvete un lujo, no una opcion": "Vuelvete un lujo, no una opcion.jpg",
+        "Conversaciones con Dios para jovenes": "Conversaciones con Dios para jovenes.jpg",
+        "El retrato de Dorian Grey": "El retrato de Dorian Grey.jpg",
+        "Manual del guerrero de la luz": "Manual del guerrero de la luz.jpg",
+        "la libertad de ser quien soy": "la libertad de ser quien soy.jpg",
+        "lecciones de seduccion": "lecciones de seduccion.jpg",
+        "no quiero crecer": "no quiero crecer.jpg",
+        "No te ahogues en un vaso de agua para adolescentes": "No te ahogues en un vaso de agua para adolescentes.jpg",
+        "Matilda": "Matilda.jpg",
+        "Lucas una aventura en cuatro patas": "Lucas una aventura en cuatro patas.jpg",
+        "Como no vas a poder": "Como no vas a poder.jpg",
+        "Deshojando Margaritas": "Deshojando Margaritas.jpg",
+        "Jonas y la ballena rosada": "Jonas y la ballena rosada.jpg",
+        "100 citas con mi mejor amiga": "100 citas con mi mejor amiga.jpg",
+        "40 dias de viaje en silencio": "40 dias de viaje en silencio.jpg",
+        "46 cartas estoicas": "46 cartas estoicas.jpg",
+        "Boulevard (boulevard, despues de el, antes de ella, eterno)": "Boulevard (boulevard, despues de el, antes de ella, eterno).jpg",
+        "Saga Narnia (7 libros tapa dura)": "Saga Narnia (7 libros tapa dura).jpg",
+        "de mi para mi puedo con esto y mas": "de mi para mi puedo con esto y mas.jpg",
+        "Como ganar amigos e influir sobre las personas": "Como ganar amigos e influir sobre las personas.jpg",
+        "El poder del ahora": "El poder del ahora.jpg",
+        "la soledad": "la soledad.jpg",
+        "el poder de tu mente subconsciente": "el poder de tu mente subconsciente.jpg",
+        "Deshacer la ansiedad": "Deshacer la ansiedad.jpg",
+        "la maldicion del amor verdadero": "la maldicion del amor verdadero.jpg",
+        "La teoria de kim (tomo 1)": "La teoria de kim (tomo 1).jpg",
+        "La teoria de kim (tomo 2)": "La teoria de kim (tomo 2).jpg",
+        "Saga Juego de tronos - Cancion de hielo y fuego (5 libros tapa dura en box set)": "Saga Juego de tronos - Cancion de hielo y fuego (5 libros tapa dura en box set).jpg",
+        "Michael 2026 - tapa dura con cantos dorados": "Michael 2026 - tapa dura con cantos dorados.jpg",
+        "Si fueramos eternos": "Si fueramos eternos.jpg",
+        "Violeta": "Violeta.jpg",
+        "el libro de azrael": "el libro de azrael.jpg",
+        "te receto otro gato": "te receto otro gato.jpg",
+        "hundida": "hundida.jpg",
+        "el libro negro de la persuasion": "el libro negro de la persuasion.jpg",
+        "Dopamina": "Dopamina.jpg",
+        "heartless": "heartless.jpg",
+        "Saga de sangre y cenizas (de sangre y cenizas y un reino de carne y fuego)": "Saga de sangre y cenizas (de sangre y cenizas y un reino de carne y fuego).jpg",
+        "trono de monstruos": "trono de monstruos.jpg",
+        "hamlet": "Hamlet.jpg",
+        "suspiros robados": "suspiros robados.jpg",
+        "Saga acotar (una corte de niebla y furia+ una corte de alas y ruina)": "Saga acotar (una corte de niebla y furia+ una corte de alas y ruina).jpg",
+        "saga gatos guerreros": "saga gatos guerreros.jpg",
+        "Saga caraval (box set 4 libros tapa dura)": "Saga caraval (box set 4 libros tapa dura).jpg",
+        "Saga a oscuras (3 libros)": "Saga a oscuras (3 libros).jpg",
+        "Saga asesino de brujas (3 libros tapa dura)": "Saga asesino de brujas (3 libros tapa dura).jpg",
+        "Saga el perfume del rey (2 libros)": "Saga el perfume del rey (2 libros).jpg",
+        "el cuadrante del flujo del dinero": "el cuadrante del flujo del dinero.jpg",
+        "por que los ricos se vuelven mas ricos": "por que los ricos se vuelven mas ricos.jpg",
+        "toma el control de tu vida": "toma el control de tu vida.jpg",
+        "el poder de confiar en ti mismo": "el poder de confiar en ti mismo.jpg",
+        "las leyes del exito": "las leyes del exito.jpg",
+        "controle su destino": "controle su destino.jpg",
+        "dinero: domina el juego": "dinero domina el juego.jpg",
+        "mi princesa valiente": "mi princesa valiente.jpg",
+        "el libro de bill": "el libro de bill.jpg",
+        "yolo aventuras": "yolo aventuras.jpg",
+        "la ley de murphy para los dias que se te hacen bola": "la ley de murphy para los dias que se te hacen bola.jpg",
+        "la ley de murphy": "la ley de murphy.jpg",
+        "adolescente mutante": "adolescente mutante.jpg",
+        "el acto de crear: una manera de ser": "el acto de crear una manera de ser.jpg",
+        "antes de que sea tarde": "antes de que sea tarde.jpg",
+        "querido yo: vamos a estar bien": "querido yo vamos a estar bien.jpg",
+        "el espejo africano": "el espejo africano.jpg",
+        "el arte de manipular": "el arte de manipular.jpg",
+        "la inquilina": "la inquilina.jpg",
+        "mi lucha": "mi lucha.jpg",
+        "los hornos de hitler": "los hornos de hitler.jpg",
+        "un regalo en el cafe de la luna llena": "un regalo en el cafe de la luna llena.jpg",
+        "el jugador TAPA DURA": "el jugador TAPA DURA.jpg",
+        "Basta de amores de mierda": "Basta de amores de mierda.jpg",
+        "la biblia de la psicologia oscura": "la biblia de la psicologia oscura.jpg",
+        "trucos de psicologia oscura": "trucos de psicologia oscura.jpg",
+        "pre suacion": "pre suacion.jpg",
+        "maestria": "maestria.jpg",
+        "al final mueren los dos": "al final mueren los dos.jpg",
+        "lo que te escribi con el corazon roto": "lo que te escribi con el corazon roto.jpg",
+        "corazon espinado": "corazon espinado.jpg",
+        "beyond the story": "BTS - beyond the story.jpg",
+        "cuando mama lastima": "cuando mama lastima.jpg",
+        "cuando papa lastima": "cuando papa lastima.jpg",
+        "la cancion de aquiles": "la cancion de aquiles.jpg",
+        "ya no dependo de ti": "ya no dependo de ti.jpg",
+        "romper el circulo": "romper el circulo.jpg",
+        "deja de sobrevivir y empieza a vivir": "Deja de sobrevivir y empieza a vivir.jpg",
+        "amor a cuatro estaciones": "amor a cuatro estaciones.jpg",
+    };
+    const portadasNuevas = {
+        'Los hombres son de marte las mujeres son de venus TAPA DURA': 'los hombres son de marte las mujeres de venus.jpg',
+        'Las 7 claves para manifestar tus sueÃ±os TAPA DURA': 'las 7 claves para manifestar tus sue\u00f1os.jpg',
+        'Anatomia Humana (2 tomos tapa dura)': 'saga anatomia humana.jpeg',
+        'El cerebro del niÃ±o': 'El cerebro del ni\u00f1o.jpg',
+        'Manual de funcionamiento ejecutivo para niÃ±os con tdah': 'Manual de funcionamiento ejecutivo para ni\u00f1os con tdah.jpg',
+        'La Iliada': 'la illiada.jpg',
+        'el pequeÃ±o libro del estoicismo': 'el peque\u00f1o libro del estoicismo.jpg',
+        'el gran engaÃ±o del dinero': 'el gran enga\u00f1o del dinero.jpg',
+        'El extraÃ±o caso del dr jeckyll y mr Hyde': 'El extra\u00f1o caso del dr jeckyll y mr Hyde.jpg',
+        'El seÃ±or de las moskas': 'El se\u00f1or de las moskas.jpg',
+        'Saga Percy Jackson (del 1 al 5)': 'Saga Percy Jackson.jpg',
+        'Releasing 10 (tommen 6)': 'Releasing 10-tommen 6-Chloe Walsh.jpg',
+        'Prospectos': 'Prospectos $100M.jpg',
+        'Saga Isabella Miller (5 libros tapa dura)': 'saga isabella miller.jpg',
+        'No te creas todo lo que pÃ­ensas': 'No te creas todo lo que p\u00edensas.jpg',
+        'Saga el seÃ±or de los anillos - tapa dura en box set': 'Saga el se\u00f1or de los anillos - tapa dura en box set.jpg',
+        'el niÃ±o pisaflores TAPA DURA': 'el ni\u00f1o pisaflores TAPA DURA.jpg',
+        'la taza de la maÃ±ana': 'la taza de la ma\u00f1ana.jpg',
+        'portal 11:11': 'portal 1111.jpg',
+        'el libro negro de la nueva izquierda nicolas': 'el libro negro de la nueva izquierda.jpg'
+    };
+    Object.assign(portadasPorTitulo, portadasNuevas);
+    Object.assign(portadasPorTitulo, portadasDetectadas);
+    todosLosLibros.forEach(libro => {
+        const portada = portadasPorTitulo[libro.titulo];
+        if (!libro.imagen && portada) libro.imagen = `imagenes/${encodeURI(portada)}`;
+    });
+
+    const titulosInfantiles = new Set([
+        'Saga Harry Potter (del 1 al 7)',
+        'Saga Percy Jackson (del 1 al 5)',
+        'Saga Percy Jackson (3 libros)',
+        'La ley de murphy para niños',
+        'El niño que dejo de ser un desastre',
+        'El cerebro del niño',
+        'Manual de funcionamiento ejecutivo para niños con tdah',
+        'Coraline',
+        'Coraline - edicion ilustrada',
+        'Saga Narnia (7 libros tapa dura)',
+        'El principito',
+        'El laberinto del dinotauro',
+        'Frozen 2',
+        'Cuentos para un amigo con gripe',
+        'El diario de Greg 4',
+        'El diario de Greg 7',
+        'El diario de Greg 8',
+        'El diario de Greg 9',
+        'El diario de Greg 11',
+        'El diario de Greg 16',
+        'El diario de Greg 20',
+        'Matilda',
+        'El arte de la guerra para niños'
+    ]);
+    const titulosClasicos = new Set([
+        'Rayuela',
+        'El mito de sisifo',
+        'La peste',
+        'El Extranjero',
+        'Cronica de una muerte anunciada',
+        '100 años de soledad',
+        'La metamorfosis',
+        'el diario de ana frank',
+        'Poesia completa',
+        'El mundo de Sofia',
+        'El viejo y el mar',
+        'El tunel',
+        'El coronel no tiene quien le escriba',
+        'memorias de mis putas tristes',
+        'Relato de un naufrago',
+        'rebelion en la granja',
+        'Siddarta',
+        'La Iliada',
+        'La casa de los espiritus',
+        'Orgullo y prejuicio',
+        'Pedro paramo',
+        'Don quijote de la mancha',
+        'El principe',
+        'El retrato de Dorian Grey',
+        'Farenheit 451',
+        'El extraño caso del dr jeckyll y mr Hyde',
+        'La tregua',
+        'El arte de la guerra',
+        'El señor de las moskas'
+    ]);
+    todosLosLibros.forEach(libro => {
+        if (libro.categoria === 'terror') libro.categoria = 'thriller';
+        if (titulosInfantiles.has(libro.titulo)) libro.categoria = 'infantiles';
+        if (titulosClasicos.has(libro.titulo)) libro.categoria = 'clasicos';
+    });
+
+    let categoriaActual = 'all';
+    let textoBusqueda = '';
+    let paginaActual = 1;
+    const librosPorPagina = 24;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const grid = document.getElementById("book-grid");
+        const paginationContainer = document.getElementById("pagination");
+        const searchInput = document.getElementById("search-books");
+        const categoryFilters = document.getElementById("catalog-category-filters");
+        const nombresCategorias = {
+            fantasia: 'Fantasía',
+            desarrollo: 'Desarrollo personal / Psicología',
+            romance: 'Romance',
+            thriller: 'Terror y thriller',
+            infantiles: 'Infantiles',
+            clasicos: 'Clásicos e historia',
+            otros: 'Otros'
+        };
+        const categorias = [...new Set(todosLosLibros.map(libro => libro.categoria).filter(Boolean))].sort();
+        const crearFiltro = (categoria, etiqueta, cantidad) => {
+            const boton = document.createElement('button');
+            boton.type = 'button';
+            boton.className = 'filter-btn category-filter-btn';
+            boton.dataset.filter = categoria;
+            boton.textContent = cantidad === undefined ? etiqueta : `${etiqueta} (${cantidad})`;
+            if (categoria === 'all') boton.classList.add('active');
+            return boton;
+        };
+        categoryFilters.appendChild(crearFiltro('all', 'Todos', todosLosLibros.length));
+        categorias.forEach(categoria => {
+            const cantidad = todosLosLibros.filter(libro => libro.categoria === categoria).length;
+            const etiqueta = nombresCategorias[categoria] || categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            categoryFilters.appendChild(crearFiltro(categoria, etiqueta, cantidad));
+        });
+        const filterBtns = document.querySelectorAll(".filter-btn");
+
+        function obtenerLibrosFiltrados() {
+            return todosLosLibros.filter(libro => {
+                const coincideCategoria = (categoriaActual === 'all' || libro.categoria === categoriaActual);
+                const normalizar = texto => String(texto || '')
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLocaleLowerCase('es');
+                const query = normalizar(textoBusqueda.trim());
+                const coincideTexto = query === '' || [libro.titulo, libro.autor, libro.categoria]
+                    .some(dato => normalizar(dato).includes(query));
+                return coincideCategoria && coincideTexto;
+            });
+        }
+
+        function renderizar() {
+            const filtrados = obtenerLibrosFiltrados();
+            const totalPaginas = Math.ceil(filtrados.length / librosPorPagina) || 1;
+
+            if (paginaActual > totalPaginas) {
+                paginaActual = 1;
+            }
+
+            const inicio = (paginaActual - 1) * librosPorPagina;
+            const fin = inicio + librosPorPagina;
+            const librosPagina = filtrados.slice(inicio, fin);
+
+            grid.innerHTML = "";
+
+            if (librosPagina.length === 0) {
+                grid.innerHTML = `<div class="no-results">No se encontraron libros que coincidan con tu búsqueda.</div>`;
+                paginationContainer.innerHTML = "";
+                return;
+            }
+
+            librosPagina.forEach(libro => {
+                const article = document.createElement("article");
+                article.className = `book-card ${libro.categoria}${libro.imagen ? '' : ' sin-imagen'}`;
+                article.setAttribute("data-categoria", libro.categoria);
+
+                const precioFormateado = "$" + libro.precio.toLocaleString("es-AR");
+                const catCapitalizada = nombresCategorias[libro.categoria] || libro.categoria.charAt(0).toUpperCase() + libro.categoria.slice(1);
+                const escapar = (valor) => String(valor || '').replace(/[&<>"']/g, caracter => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                }[caracter]));
+
+                article.innerHTML = `
+                    ${libro.imagen ? `<img src="${libro.imagen}" alt="${escapar(libro.titulo)}" loading="lazy">` : ''}
+                    <small class="imagen-ilustrativa">Imágenes ilustrativas</small>
+                    <h3>${escapar(libro.titulo)}</h3>
+                    <p>${escapar(libro.autor)}</p>
+                    <span>${escapar(catCapitalizada)}</span>
+                    <h4>${precioFormateado}</h4>
+                    <button type="button" aria-label="Agregar ${escapar(libro.titulo)} al carrito">Agregar al carrito</button>
+                `;
+                grid.appendChild(article);
+            });
+
+            renderizarPaginacion(totalPaginas);
+        }
+
+        function renderizarPaginacion(totalPaginas) {
+            paginationContainer.innerHTML = "";
+            if (totalPaginas <= 1) return;
+
+            const btnAnterior = document.createElement("button");
+            btnAnterior.className = "pagination-btn";
+            btnAnterior.textContent = "« Anterior";
+            btnAnterior.disabled = paginaActual === 1;
+            btnAnterior.addEventListener("click", () => {
+                if (paginaActual > 1) {
+                    paginaActual--;
+                    renderizar();
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                }
+            });
+            paginationContainer.appendChild(btnAnterior);
+
+            let startPage = Math.max(1, paginaActual - 2);
+            let endPage = Math.min(totalPaginas, paginaActual + 2);
+
+            if (startPage > 1) {
+                const btn1 = document.createElement("button");
+                btn1.className = "pagination-btn";
+                btn1.textContent = "1";
+                btn1.addEventListener("click", () => { paginaActual = 1; renderizar(); window.scrollTo({ top: 300, behavior: 'smooth' }); });
+                paginationContainer.appendChild(btn1);
+                if (startPage > 2) {
+                    const span = document.createElement("span");
+                    span.textContent = "...";
+                    span.style.padding = "0 5px";
+                    paginationContainer.appendChild(span);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement("button");
+                btn.className = `pagination-btn ${i === paginaActual ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.addEventListener("click", () => {
+                    paginaActual = i;
+                    renderizar();
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                });
+                paginationContainer.appendChild(btn);
+            }
+
+            if (endPage < totalPaginas) {
+                if (endPage < totalPaginas - 1) {
+                    const span = document.createElement("span");
+                    span.textContent = "...";
+                    span.style.padding = "0 5px";
+                    paginationContainer.appendChild(span);
+                }
+                const btnLast = document.createElement("button");
+                btnLast.className = "pagination-btn";
+                btnLast.textContent = totalPaginas;
+                btnLast.addEventListener("click", () => { paginaActual = totalPaginas; renderizar(); window.scrollTo({ top: 300, behavior: 'smooth' }); });
+                paginationContainer.appendChild(btnLast);
+            }
+
+            const btnSiguiente = document.createElement("button");
+            btnSiguiente.className = "pagination-btn";
+            btnSiguiente.textContent = "Siguiente »";
+            btnSiguiente.disabled = paginaActual === totalPaginas;
+            btnSiguiente.addEventListener("click", () => {
+                if (paginaActual < totalPaginas) {
+                    paginaActual++;
+                    renderizar();
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                }
+            });
+            paginationContainer.appendChild(btnSiguiente);
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                categoriaActual = btn.getAttribute("data-filter");
+                paginaActual = 1;
+                renderizar();
+            });
+        });
+
+        searchInput.addEventListener("input", (e) => {
+            textoBusqueda = e.target.value;
+            // La búsqueda recorre el catálogo completo, aunque antes se haya elegido una categoría.
+            categoriaActual = 'all';
+            filterBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === 'all'));
+            paginaActual = 1;
+            renderizar();
+        });
+
+        renderizar();
+    });
+
+    (function(){
+        const hamburgers = document.querySelectorAll('.hamburger');
+        hamburgers.forEach(btn => {
+            const nav = btn.closest('.nav-container').querySelector('.nav-menu');
+
+            const setOpen = (open) => {
+                if(open){
+                    nav.classList.add('open');
+                    btn.setAttribute('aria-expanded','true');
+                } else {
+                    nav.classList.remove('open');
+                    btn.setAttribute('aria-expanded','false');
+                }
+            };
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = !nav.classList.contains('open');
+                setOpen(isOpen);
+            });
+
+            nav.querySelectorAll('a, summary').forEach(el => {
+                el.addEventListener('click', () => setOpen(false));
+            });
+
+            document.addEventListener('click', (e) => {
+                if(!btn.contains(e.target) && !nav.contains(e.target) && nav.classList.contains('open')){
+                    setOpen(false);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if(e.key === 'Escape' && nav.classList.contains('open')){
+                    setOpen(false);
+                    btn.focus();
+                }
+            });
+        });
+    })();
+
+</script>
+</body>
+</html>
